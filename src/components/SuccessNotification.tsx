@@ -36,10 +36,10 @@ export function SuccessNotification({
       <div
         className={`
           relative overflow-hidden rounded-2xl p-5 min-w-[320px] max-w-[400px]
-          border border-white/20
-          bg-gradient-to-br from-white/15 to-white/5
+          border border-white/10
+          bg-slate-900/95
           backdrop-blur-xl
-          shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)]
+          shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)]
           transition-all duration-400 ease-out
           ${animating ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'}
         `}
@@ -56,8 +56,8 @@ export function SuccessNotification({
 
           {/* Text */}
           <div className="flex-1 min-w-0">
-            <h4 className="text-sm font-semibold text-white tracking-wide">{title}</h4>
-            <p className="text-xs text-white/60 mt-1 leading-relaxed">{description}</p>
+            <h4 className="text-sm font-bold text-slate-50 tracking-wide">{title}</h4>
+            <p className="text-xs text-slate-300 mt-1 leading-relaxed font-medium">{description}</p>
           </div>
 
           {/* Close */}

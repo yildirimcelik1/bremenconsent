@@ -56,6 +56,7 @@ export interface ConsentForm {
   other_health_notes: string | null;
   procedure_description: string | null;
   body_area: string | null;
+  gender: string | null;
   reference_notes: string | null;
   designer_notes: string | null;
   internal_notes: string | null;
@@ -68,6 +69,7 @@ export interface ConsentForm {
   document_generated_at: string | null;
   price: string | null;
   assigned_artist_id: string | null;
+  last_birthday_wish_year: number | null;
 }
 
 export interface Artist {

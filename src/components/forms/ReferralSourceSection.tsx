@@ -1,7 +1,7 @@
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 
-const REFERRAL_OPTIONS = ['Instagram', 'Facebook', 'Google', 'Walk-by', 'Other'] as const;
+export const REFERRAL_OPTIONS = ['Instagram', 'Facebook', 'Google', 'Walk-by', 'Other'] as const;
 
 interface ReferralSourceSectionProps {
   value: string | null;

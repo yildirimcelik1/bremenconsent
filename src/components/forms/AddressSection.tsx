@@ -24,7 +24,7 @@ export function AddressSection({
   return (
     <div className="grid gap-4 md:grid-cols-3">
       <div className="space-y-2">
-        <Label>Country</Label>
+        <Label>Country <span className="text-rose-500 font-bold">*</span></Label>
         <Select value={selectedCountry} onValueChange={v => { onCountryChange(v); onCityChange(null); }} disabled={disabled}>
           <SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>
@@ -35,7 +35,7 @@ export function AddressSection({
         </Select>
       </div>
       <div className="space-y-2">
-        <Label>City</Label>
+        <Label>City <span className="text-rose-500 font-bold">*</span></Label>
         {cities ? (
           <Select value={city || ''} onValueChange={v => onCityChange(v)} disabled={disabled}>
             <SelectTrigger><SelectValue placeholder="Select city" /></SelectTrigger>
@@ -50,7 +50,7 @@ export function AddressSection({
         )}
       </div>
       <div className="space-y-2">
-        <Label>Postal Code</Label>
+        <Label>Postal Code <span className="text-rose-500 font-bold">*</span></Label>
         <Input value={postalCode || ''} onChange={e => onPostalCodeChange(e.target.value || null)} disabled={disabled} placeholder="e.g. 28195" />
       </div>
     </div>

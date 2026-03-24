@@ -55,9 +55,12 @@ export default function DesignerDashboard() {
   useEffect(() => { fetchData(); }, [user]);
 
   const handleApprove = async (formId: string) => {
+    const form = forms.find(f => f.id === formId);
     const artistId = assignedArtists[formId];
     const price = prices[formId];
-    if (!artistId) {
+    
+    // Tattoo forms require an artist, piercing forms do not
+    if (form?.consent_type === 'tattoo' && !artistId) {
       toast({ title: 'Error', description: 'Please select an artist before approving.', variant: 'destructive' });
       return;
     }
@@ -119,11 +122,11 @@ export default function DesignerDashboard() {
             <p className="text-muted-foreground text-sm mt-1">Create and manage client consent forms</p>
           </div>
           <div className="flex gap-3">
-            <Button onClick={() => navigate('/forms/new?type=tattoo')} className="gap-2">
-              <Stamp className="h-4 w-4" /> Tattoo
+            <Button onClick={() => navigate('/forms/new?type=tattoo')}>
+              Tattoo
             </Button>
-            <Button onClick={() => navigate('/forms/new?type=piercing')} variant="outline" className="gap-2">
-              <Droplets className="h-4 w-4" /> Piercing
+            <Button onClick={() => navigate('/forms/new?type=piercing')} variant="outline">
+              Piercing
             </Button>
           </div>
         </div>
@@ -200,17 +203,23 @@ export default function DesignerDashboard() {
                           {new Date(f.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </TableCell>
                         <TableCell>
-                          <Select
-                            value={assignedArtists[f.id] || ''}
-                            onValueChange={v => setAssignedArtists(prev => ({ ...prev, [f.id]: v }))}
-                          >
-                            <SelectTrigger className="w-[160px]"><SelectValue placeholder="Select Artist" /></SelectTrigger>
-                            <SelectContent>
-                              {artists.map(a => (
-                                <SelectItem key={a.id} value={a.id}>{a.name}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          {f.consent_type === 'tattoo' ? (
+                            <Select
+                              value={assignedArtists[f.id] || ''}
+                              onValueChange={v => setAssignedArtists(prev => ({ ...prev, [f.id]: v }))}
+                            >
+                              <SelectTrigger className="w-[160px]">
+                                <SelectValue placeholder="Select Artist" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {artists.map(a => (
+                                  <SelectItem key={a.id} value={a.id}>{a.name}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          ) : (
+                            <span className="text-muted-foreground text-xs italic">— Not Required</span>
+                          )}
                         </TableCell>
                         <TableCell>
                           <Input
