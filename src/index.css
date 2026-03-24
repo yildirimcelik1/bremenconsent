@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    /* Kırık beyaz zemin */
+    --background: 60 4% 95%;
+    --foreground: 0 0% 7%;
+
+    /* Beyaz kartlar */
+    --card: 60 4% 98%;
+    --card-foreground: 0 0% 7%;
+
+    --popover: 60 4% 98%;
+    --popover-foreground: 0 0% 7%;
+
+    /* Altın sarısı primary */
+    --primary: 40 78% 48%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Açık gri secondary */
+    --secondary: 60 2% 90%;
+    --secondary-foreground: 0 0% 7%;
+
+    /* Muted gri */
+    --muted: 60 2% 92%;
+    --muted-foreground: 0 0% 54%;
+
+    /* Bakır-turuncu accent */
+    --accent: 25 63% 48%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 30 6% 85%;
+    --input: 30 6% 85%;
+    --ring: 40 78% 48%;
+
+    --radius: 0.75rem;
+
+    /* Açık frosted glass sidebar */
+    --sidebar-background: 60 4% 96%;
+    --sidebar-foreground: 0 0% 30%;
+    --sidebar-primary: 40 78% 48%;
+    --sidebar-primary-foreground: 0 0% 7%;
+    --sidebar-accent: 40 30% 92%;
+    --sidebar-accent-foreground: 0 0% 7%;
+    --sidebar-border: 30 6% 88%;
+    --sidebar-ring: 40 78% 48%;
+
+    --status-draft: 40 78% 48%;
+    --status-approved: 152 60% 40%;
+
+    --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+    /* Extra palette tokens */
+    --gold: 40 78% 48%;
+    --copper: 25 63% 48%;
+    --charcoal: 0 0% 16%;
+    --taupe: 18 14% 58%;
+    --warm-beige: 22 34% 74%;
+  }
+
+  .dark {
+    --background: 0 0% 7%;
+    --foreground: 60 4% 95%;
+
+    --card: 0 0% 10%;
+    --card-foreground: 60 4% 95%;
+
+    --popover: 0 0% 10%;
+    --popover-foreground: 60 4% 95%;
+
+    --primary: 40 78% 48%;
+    --primary-foreground: 0 0% 7%;
+
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 60 4% 95%;
+
+    --muted: 0 0% 16%;
+    --muted-foreground: 0 0% 54%;
+
+    --accent: 25 63% 48%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 40 78% 48%;
+
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 30 6% 60%;
+    --sidebar-primary: 40 78% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 30 6% 90%;
+    --sidebar-border: 0 0% 12%;
+    --sidebar-ring: 40 78% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: hsla(60, 4%, 98%, 0.65);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid hsla(60, 4%, 98%, 0.3);
+    box-shadow:
+      0 4px 6px -1px hsla(0, 0%, 0%, 0.06),
+      0 10px 15px -3px hsla(0, 0%, 0%, 0.04),
+      inset 0 1px 0 hsla(60, 4%, 100%, 0.5);
+  }
+
+  .glass-dark {
+    background: hsla(60, 4%, 97%, 0.55);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border-right: 1px solid hsla(40, 30%, 80%, 0.35);
+    box-shadow:
+      0 8px 32px hsla(0, 0%, 0%, 0.06),
+      inset 0 1px 0 hsla(0, 0%, 100%, 0.6),
+      inset -1px 0 0 hsla(0, 0%, 100%, 0.3);
+  }
+
+  .mesh-gradient {
+    background:
+      radial-gradient(ellipse at 15% 50%, hsla(40, 60%, 90%, 0.35) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 20%, hsla(25, 40%, 88%, 0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 85%, hsla(30, 20%, 92%, 0.25) 0%, transparent 50%),
+      hsl(var(--background));
+  }
+
+  .mesh-gradient-auth {
+    background:
+      radial-gradient(ellipse at 25% 30%, hsla(40, 60%, 85%, 0.4) 0%, transparent 50%),
+      radial-gradient(ellipse at 75% 60%, hsla(25, 50%, 80%, 0.35) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 90%, hsla(22, 34%, 85%, 0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 10%, hsla(18, 14%, 88%, 0.2) 0%, transparent 50%),
+      hsl(var(--background));
+  }
+}
