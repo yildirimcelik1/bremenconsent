@@ -402,6 +402,29 @@ export function PiercingConsentForm({
                 <p className="text-xs text-muted-foreground">Tüm maddeleri okudum ve uygulama risklerini kabul ediyorum.</p>
               </div>
             </div>
+
+            <div 
+              className="flex items-start gap-4 p-3 rounded-lg hover:bg-accent/5 transition-colors cursor-pointer group"
+              onClick={() => !isReadOnly && update('gdpr_email_consent', !form.gdpr_email_consent)}
+            >
+              <div
+                className={`mt-0.5 h-6 w-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-300 ${
+                  form.gdpr_email_consent
+                    ? 'border-accent bg-accent scale-105 shadow-sm shadow-accent/20'
+                    : 'border-input bg-background border-border/60'
+                }`}
+              >
+                {form.gdpr_email_consent && (
+                  <CheckCircle className="h-4 w-4 text-accent-foreground" />
+                )}
+              </div>
+              <div className="space-y-1">
+                <Label className="text-base font-medium text-foreground cursor-pointer group-hover:text-accent transition-colors">
+                  I accept to receive email campaigns and informational messages.
+                </Label>
+                <p className="text-xs text-muted-foreground">Kampanyalardan ve bilgilendirmelerden haberdar olmak için e-posta ve mesaj (WhatsApp) almayı kabul ediyorum.</p>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
