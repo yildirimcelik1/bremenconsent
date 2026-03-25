@@ -44,19 +44,19 @@ function AppSidebar() {
 
   const handleChangePassword = async () => {
     if (!newPw || newPw.length < 6) {
-      toast({ title: 'Error', description: 'Password must be at least 6 characters.', variant: 'destructive' });
+      toast({ title: 'Fehler', description: 'Das Passwort muss mindestens 6 Zeichen lang sein.', variant: 'destructive' });
       return;
     }
     if (newPw !== newPwConfirm) {
-      toast({ title: 'Error', description: 'Passwords do not match.', variant: 'destructive' });
+      toast({ title: 'Fehler', description: 'Die Passwörter stimmen nicht überein.', variant: 'destructive' });
       return;
     }
     setChangingPw(true);
     const { error } = await supabase.auth.updateUser({ password: newPw });
     if (error) {
-      toast({ title: 'Failed', description: error.message, variant: 'destructive' });
+      toast({ title: 'Fehlgeschlagen', description: error.message, variant: 'destructive' });
     } else {
-      toast({ title: 'Password updated successfully' });
+      toast({ title: 'Passwort erfolgreich aktualisiert' });
       setPwOpen(false);
       setNewPw('');
       setNewPwConfirm('');
@@ -65,15 +65,15 @@ function AppSidebar() {
   };
 
   const adminItems = [
-    { title: 'Statistics', url: '/admin', icon: BarChart3 },
-    { title: 'Management', url: '/admin/management', icon: Settings },
-    { title: 'Users', url: '/admin/users', icon: Users },
-    { title: 'All Forms', url: '/admin/forms', icon: FileText },
+    { title: 'Statistik', url: '/admin', icon: BarChart3 },
+    { title: 'Verwaltung', url: '/admin/management', icon: Settings },
+    { title: 'Benutzer', url: '/admin/users', icon: Users },
+    { title: 'Alle Formulare', url: '/admin/forms', icon: FileText },
   ];
 
   const designerItems = [
-    { title: 'Dashboard', url: '/designer', icon: LayoutDashboard },
-    { title: 'My Forms', url: '/designer/forms', icon: FileText },
+    { title: 'Übersicht', url: '/designer', icon: LayoutDashboard },
+    { title: 'Meine Formulare', url: '/designer/forms', icon: FileText },
   ];
 
   const items = profile?.role === 'admin' ? adminItems : designerItems;
@@ -88,7 +88,7 @@ function AppSidebar() {
               <div className="flex items-center gap-2">
                 <div className="h-8 w-1 rounded-full bg-gradient-to-b from-primary to-accent" />
                 <h2 className="text-sm font-bold tracking-wider text-foreground/80 uppercase">
-                  Consent Manager
+                  Einwilligungs-Manager
                 </h2>
               </div>
             )}
@@ -125,7 +125,7 @@ function AppSidebar() {
               className="w-full justify-start text-foreground/40 hover:text-primary hover:bg-primary/10 mb-2"
             >
               <KeyRound className="h-4 w-4 mr-2" />
-              {!collapsed && 'Settings'}
+              {!collapsed && 'Einstellungen'}
             </Button>
           )}
           {collapsed && (
@@ -151,26 +151,26 @@ function AppSidebar() {
             className="w-full justify-start text-foreground/40 hover:text-primary hover:bg-primary/10"
           >
             <LogOut className="h-4 w-4 mr-2" />
-            {!collapsed && 'Sign out'}
+            {!collapsed && 'Abmelden'}
           </Button>
         </div>
       </SidebarContent>
     </Sidebar>
     <Dialog open={pwOpen} onOpenChange={setPwOpen}>
       <DialogContent>
-        <DialogHeader><DialogTitle>Change Password</DialogTitle></DialogHeader>
+        <DialogHeader><DialogTitle>Passwort ändern</DialogTitle></DialogHeader>
         <div className="space-y-4 mt-2">
           <div className="space-y-2">
-            <Label>New Password</Label>
-            <Input type="password" value={newPw} onChange={e => setNewPw(e.target.value)} placeholder="At least 6 characters" />
+            <Label>Neues Passwort</Label>
+            <Input type="password" value={newPw} onChange={e => setNewPw(e.target.value)} placeholder="Mindestens 6 Zeichen" />
           </div>
           <div className="space-y-2">
-            <Label>Confirm Password</Label>
-            <Input type="password" value={newPwConfirm} onChange={e => setNewPwConfirm(e.target.value)} placeholder="Re-enter password" />
+            <Label>Passwort bestätigen</Label>
+            <Input type="password" value={newPwConfirm} onChange={e => setNewPwConfirm(e.target.value)} placeholder="Passwort erneut eingeben" />
           </div>
           <Button className="w-full" onClick={handleChangePassword} disabled={changingPw}>
             {changingPw && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-            Update Password
+            Passwort aktualisieren
           </Button>
         </div>
       </DialogContent>

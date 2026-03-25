@@ -60,15 +60,15 @@ export default function AdminDashboard() {
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inviteEmail || !inviteName || !invitePassword || !inviteRole) {
-      toast({ title: 'Error', description: 'All fields are required.', variant: 'destructive' });
+      toast({ title: 'Fehler', description: 'Alle Felder sind erforderlich.', variant: 'destructive' });
       return;
     }
     if (invitePassword.length < 6) {
-      toast({ title: 'Error', description: 'Password must be at least 6 characters.', variant: 'destructive' });
+      toast({ title: 'Fehler', description: 'Das Passwort muss mindestens 6 Zeichen lang sein.', variant: 'destructive' });
       return;
     }
     if (invitePassword !== invitePasswordConfirm) {
-      toast({ title: 'Error', description: 'Passwords do not match.', variant: 'destructive' });
+      toast({ title: 'Fehler', description: 'Die Passwörter stimmen nicht überein.', variant: 'destructive' });
       return;
     }
     setInviting(true);
@@ -78,7 +78,7 @@ export default function AdminDashboard() {
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
-      toast({ title: 'User created', description: `${inviteEmail} has been added successfully.` });
+      toast({ title: 'Benutzer erstellt', description: `${inviteEmail} wurde erfolgreich hinzugefügt.` });
       setInviteOpen(false);
       setInviteEmail('');
       setInviteName('');
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
       setInviteRole('designer');
       fetchData();
     } catch (err: any) {
-      toast({ title: 'Creation failed', description: err.message, variant: 'destructive' });
+      toast({ title: 'Erstellung fehlgeschlagen', description: err.message, variant: 'destructive' });
     }
     setInviting(false);
   };
@@ -100,10 +100,10 @@ export default function AdminDashboard() {
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
-      toast({ title: 'User deleted' });
+      toast({ title: 'Benutzer gelöscht' });
       fetchData();
     } catch (err: any) {
-      toast({ title: 'Deletion failed', description: err.message, variant: 'destructive' });
+      toast({ title: 'Löschen fehlgeschlagen', description: err.message, variant: 'destructive' });
     }
     setDeletingId(null);
   };
@@ -111,15 +111,15 @@ export default function AdminDashboard() {
   const handleAddArtist = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newArtistName.trim()) {
-      toast({ title: 'Error', description: 'Artist name is required.', variant: 'destructive' });
+      toast({ title: 'Fehler', description: 'Artist-Name ist erforderlich.', variant: 'destructive' });
       return;
     }
     setAddingArtist(true);
     const { error } = await supabase.from('artists').insert({ name: newArtistName.trim() } as any);
     if (error) {
-      toast({ title: 'Failed', description: error.message, variant: 'destructive' });
+      toast({ title: 'Fehlgeschlagen', description: error.message, variant: 'destructive' });
     } else {
-      toast({ title: 'Artist added', description: `${newArtistName} has been added.` });
+      toast({ title: 'Artist hinzugefügt', description: `${newArtistName} wurde hinzugefügt.` });
       setNewArtistName('');
       setArtistOpen(false);
       fetchData();
@@ -131,9 +131,9 @@ export default function AdminDashboard() {
     setDeletingArtistId(artistId);
     const { error } = await supabase.from('artists').delete().eq('id', artistId);
     if (error) {
-      toast({ title: 'Delete failed', description: error.message, variant: 'destructive' });
+      toast({ title: 'Löschen fehlgeschlagen', description: error.message, variant: 'destructive' });
     } else {
-      toast({ title: 'Artist deleted' });
+      toast({ title: 'Artist gelöscht' });
       fetchData();
     }
     setDeletingArtistId(null);
@@ -148,9 +148,9 @@ export default function AdminDashboard() {
     }
     const { error } = await supabase.from('consent_forms').delete().eq('id', formId);
     if (error) {
-      toast({ title: 'Delete failed', description: error.message, variant: 'destructive' });
+      toast({ title: 'Löschen fehlgeschlagen', description: error.message, variant: 'destructive' });
     } else {
-      toast({ title: 'Form deleted' });
+      toast({ title: 'Formular gelöscht' });
       fetchData();
     }
     setDeletingFormId(null);
@@ -180,8 +180,8 @@ export default function AdminDashboard() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Admin Dashboard</h1>
-            <p className="text-muted-foreground text-sm mt-1">System overview and management</p>
+            <h1 className="text-2xl font-bold tracking-tight">Admin-Übersicht</h1>
+            <p className="text-muted-foreground text-sm mt-1">Systemübersicht und Verwaltung</p>
           </div>
         </div>
 
@@ -189,7 +189,7 @@ export default function AdminDashboard() {
         <div className="grid gap-4 md:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Users</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Benutzer insgesamt</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -198,7 +198,7 @@ export default function AdminDashboard() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Forms</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Einverständnisbögen</CardTitle>
               <FileText className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -207,7 +207,7 @@ export default function AdminDashboard() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Draft Forms</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Entwürfe</CardTitle>
               <FilePlus className="h-4 w-4 text-status-draft" />
             </CardHeader>
             <CardContent>
@@ -216,7 +216,7 @@ export default function AdminDashboard() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Approved Forms</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Genehmigte Formulare</CardTitle>
               <FileCheck className="h-4 w-4 text-status-approved" />
             </CardHeader>
             <CardContent>
@@ -233,20 +233,20 @@ export default function AdminDashboard() {
             </CardTitle>
             <Dialog open={artistOpen} onOpenChange={setArtistOpen}>
               <DialogTrigger asChild>
-                <Button size="sm"><Plus className="h-4 w-4 mr-2" />Add Artist</Button>
+                <Button size="sm"><Plus className="h-4 w-4 mr-2" />Artist hinzufügen</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Add New Artist</DialogTitle>
+                  <DialogTitle>Neuen Artist hinzufügen</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleAddArtist} className="space-y-4 mt-2">
                   <div className="space-y-2">
-                    <Label>Artist Name</Label>
-                    <Input value={newArtistName} onChange={e => setNewArtistName(e.target.value)} placeholder="Artist name" />
+                    <Label>Artist-Name</Label>
+                    <Input value={newArtistName} onChange={e => setNewArtistName(e.target.value)} placeholder="Artist-Name" />
                   </div>
                   <Button type="submit" className="w-full" disabled={addingArtist}>
                     {addingArtist && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                    Add Artist
+                    Artist hinzufügen
                   </Button>
                 </form>
               </DialogContent>
@@ -254,7 +254,7 @@ export default function AdminDashboard() {
           </CardHeader>
           <CardContent>
             {artists.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-6 text-center">No artists added yet.</p>
+              <p className="text-sm text-muted-foreground py-6 text-center">Noch keine Artists hinzugefügt.</p>
             ) : (
               <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3">
                 {artists.map(a => (
@@ -268,18 +268,18 @@ export default function AdminDashboard() {
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Delete Artist</AlertDialogTitle>
+                          <AlertDialogTitle>Artist löschen</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Are you sure you want to delete <strong>{a.name}</strong>?
+                            Sind Sie sicher, dass Sie <strong>{a.name}</strong> löschen möchten?
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogCancel>Abbrechen</AlertDialogCancel>
                           <AlertDialogAction
                             onClick={() => handleDeleteArtist(a.id)}
                             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                           >
-                            Delete
+                            Löschen
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
@@ -294,34 +294,34 @@ export default function AdminDashboard() {
         {/* Users */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg">Users</CardTitle>
+            <CardTitle className="text-lg">Benutzer</CardTitle>
             <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
               <DialogTrigger asChild>
-                <Button size="sm"><UserPlus className="h-4 w-4 mr-2" />Add User</Button>
+                <Button size="sm"><UserPlus className="h-4 w-4 mr-2" />Benutzer hinzufügen</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Create New User</DialogTitle>
+                  <DialogTitle>Neuen Benutzer erstellen</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleInvite} className="space-y-4 mt-2">
                   <div className="space-y-2">
-                    <Label>Full Name</Label>
-                    <Input value={inviteName} onChange={e => setInviteName(e.target.value)} placeholder="Full Name" />
+                    <Label>Vollständiger Name</Label>
+                    <Input value={inviteName} onChange={e => setInviteName(e.target.value)} placeholder="Vollständiger Name" />
                   </div>
                   <div className="space-y-2">
                     <Label>Email</Label>
                     <Input type="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="email@studio.com" />
                   </div>
                   <div className="space-y-2">
-                    <Label>Password</Label>
-                    <Input type="password" value={invitePassword} onChange={e => setInvitePassword(e.target.value)} placeholder="At least 6 characters" />
+                    <Label>Passwort</Label>
+                    <Input type="password" value={invitePassword} onChange={e => setInvitePassword(e.target.value)} placeholder="Mindestens 6 Zeichen" />
                   </div>
                   <div className="space-y-2">
-                    <Label>Confirm Password</Label>
-                    <Input type="password" value={invitePasswordConfirm} onChange={e => setInvitePasswordConfirm(e.target.value)} placeholder="Re-enter password" />
+                    <Label>Passwort bestätigen</Label>
+                    <Input type="password" value={invitePasswordConfirm} onChange={e => setInvitePasswordConfirm(e.target.value)} placeholder="Passwort erneut eingeben" />
                   </div>
                   <div className="space-y-2">
-                    <Label>Role</Label>
+                    <Label>Rolle</Label>
                     <Select value={inviteRole} onValueChange={setInviteRole}>
                       <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>
@@ -342,28 +342,28 @@ export default function AdminDashboard() {
             <div className="flex gap-2 mb-4">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input className="pl-9" placeholder="Search users..." value={searchUsers} onChange={e => setSearchUsers(e.target.value)} />
+                <Input className="pl-9" placeholder="Benutzer suchen..." value={searchUsers} onChange={e => setSearchUsers(e.target.value)} />
               </div>
               <Select value={filterRole} onValueChange={setFilterRole}>
-                <SelectTrigger className="w-36"><SelectValue placeholder="Role" /></SelectTrigger>
+                <SelectTrigger className="w-36"><SelectValue placeholder="Rolle" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Roles</SelectItem>
+                  <SelectItem value="all">Alle Rollen</SelectItem>
                   <SelectItem value="admin">Admin</SelectItem>
                   <SelectItem value="designer">Designer</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             {filteredUsers.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-8 text-center">No users found.</p>
+              <p className="text-sm text-muted-foreground py-8 text-center">Keine Benutzer gefunden.</p>
             ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Full Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Role</TableHead>
+                    <TableHead>Vollständiger Name</TableHead>
+                    <TableHead>E-Mail</TableHead>
+                    <TableHead>Rolle</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead>Joined</TableHead>
+                    <TableHead>Beitritt</TableHead>
                     <TableHead></TableHead>
                   </TableRow>
                 </TableHeader>
@@ -375,11 +375,11 @@ export default function AdminDashboard() {
                       <TableCell><Badge variant="secondary" className="capitalize">{u.role}</Badge></TableCell>
                       <TableCell>
                         <Badge variant={u.is_active ? 'default' : 'secondary'}>
-                          {u.is_active ? 'Active' : 'Inactive'}
+                          {u.is_active ? 'Aktiv' : 'Inaktiv'}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-muted-foreground text-sm">
-                        {new Date(u.created_at).toLocaleDateString()}
+                        {new Date(u.created_at).toLocaleDateString('de-DE')}
                       </TableCell>
                       <TableCell>
                         {u.id !== user?.id && (
@@ -391,19 +391,19 @@ export default function AdminDashboard() {
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
-                                <AlertDialogTitle>Delete User</AlertDialogTitle>
+                                <AlertDialogTitle>Benutzer löschen</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Are you sure you want to delete <strong>{u.full_name}</strong> ({u.email})? This action cannot be undone.
+                                  Sind Sie sicher, dass Sie <strong>{u.full_name}</strong> ({u.email}) löschen möchten? Dieser Vorgang kann nicht rückgängig gemacht werden.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogCancel>Abbrechen</AlertDialogCancel>
                                 <AlertDialogAction
                                   onClick={() => handleDeleteUser(u.id)}
                                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                                 >
                                   {deletingId === u.id ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                                  Delete
+                                  Löschen
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
@@ -421,33 +421,33 @@ export default function AdminDashboard() {
         {/* Forms */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Consent Forms</CardTitle>
+            <CardTitle className="text-lg">Einverständnisbögen</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex gap-2 mb-4">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input className="pl-9" placeholder="Search by client name..." value={searchForms} onChange={e => setSearchForms(e.target.value)} />
+                <Input className="pl-9" placeholder="Nach Kundenname suchen..." value={searchForms} onChange={e => setSearchForms(e.target.value)} />
               </div>
               <Select value={filterStatus} onValueChange={setFilterStatus}>
                 <SelectTrigger className="w-36"><SelectValue placeholder="Status" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="draft">Draft</SelectItem>
-                  <SelectItem value="approved">Approved</SelectItem>
+                  <SelectItem value="all">Alle Status</SelectItem>
+                  <SelectItem value="draft">Entwurf</SelectItem>
+                  <SelectItem value="approved">Genehmigt</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             {filteredForms.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-8 text-center">No forms found.</p>
+              <p className="text-sm text-muted-foreground py-8 text-center">Keine Formulare gefunden.</p>
             ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Client</TableHead>
-                    <TableHead>Type</TableHead>
+                    <TableHead>Kunde</TableHead>
+                    <TableHead>Art</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead>Created</TableHead>
+                    <TableHead>Erstellt</TableHead>
                     <TableHead></TableHead>
                   </TableRow>
                 </TableHeader>
@@ -458,12 +458,12 @@ export default function AdminDashboard() {
                       <TableCell className="capitalize">{f.consent_type}</TableCell>
                       <TableCell><StatusBadge status={f.status} /></TableCell>
                       <TableCell className="text-muted-foreground text-sm">
-                        {new Date(f.created_at).toLocaleDateString()}
+                        {new Date(f.created_at).toLocaleDateString('de-DE')}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center justify-end gap-1">
                           <Button variant="ghost" size="sm" onClick={() => navigate(`/forms/${f.id}`)}>
-                            View
+                            Ansehen
                           </Button>
                           {f.pdf_url && (
                             <Button variant="ghost" size="icon" asChild>
@@ -480,19 +480,19 @@ export default function AdminDashboard() {
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
-                                <AlertDialogTitle>Delete Form</AlertDialogTitle>
+                                <AlertDialogTitle>Formular löschen</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Are you sure you want to delete the form for <strong>{f.first_name} {f.last_name}</strong>? This will also delete the PDF. This cannot be undone.
+                                  Sind Sie sicher, dass Sie das Formular für <strong>{f.first_name} {f.last_name}</strong> löschen möchten? Dies wird auch das PDF löschen. Dies kann nicht rückgängig gemacht werden.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogCancel>Abbrechen</AlertDialogCancel>
                                 <AlertDialogAction
                                   onClick={() => handleDeleteForm(f.id)}
                                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                                 >
                                   {deletingFormId === f.id ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                                  Delete
+                                  Löschen
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>

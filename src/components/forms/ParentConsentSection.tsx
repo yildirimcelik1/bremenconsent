@@ -21,21 +21,21 @@ export function ParentConsentSection({
   return (
     <Card className="border-primary/30 bg-primary/5">
       <CardContent className="pt-6 space-y-4">
-        <h3 className="text-lg font-semibold text-primary">Parent / Guardian Consent Required</h3>
+        <h3 className="text-lg font-semibold text-primary">Einwilligung der Eltern / Erziehungsberechtigten erforderlich</h3>
         <p className="text-sm text-muted-foreground">
-          Since the client is under 18 years old, parent/guardian information and signature are required.
+          Da der Kunde unter 18 Jahre alt ist, sind Informationen und Unterschrift der Eltern/Erziehungsberechtigten erforderlich.
         </p>
         <div className="space-y-2">
-          <Label>Parent/Guardian Full Name <span className="text-destructive">*</span></Label>
+          <Label>Vollständiger Name des Elternteils/Erziehungsberechtigten <span className="text-destructive">*</span></Label>
           <Input
             value={parentName}
             onChange={e => onParentNameChange(e.target.value)}
             disabled={disabled}
-            placeholder="Enter parent/guardian full name"
+            placeholder="Vollständigen Namen des Elternteils/Erziehungsberechtigten eingeben"
           />
         </div>
         <div className="space-y-2">
-          <Label>Parent/Guardian Signature <span className="text-destructive">*</span></Label>
+          <Label>Unterschrift des Elternteils/Erziehungsberechtigten <span className="text-destructive">*</span></Label>
           <SignaturePad
             value={parentSignature}
             onChange={onParentSignatureChange}

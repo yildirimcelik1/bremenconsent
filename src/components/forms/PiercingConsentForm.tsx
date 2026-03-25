@@ -30,7 +30,6 @@ export interface PiercingFormData {
   parent_name: string;
   parent_signature: string | null;
   accepted_terms: boolean;
-  gdpr_email_consent: boolean;
   client_signature: string | null;
 }
 
@@ -51,23 +50,25 @@ function calculateAge(dob: string): number {
 }
 
 const PIERCING_CLIENT_DECLARATION = [
-  'I have considered the information "Information for the client accompanying the consent form".',
-  'I have been informed about possible risks and complications associated with the placement of the piercing and understand the information.',
-  'I am currently not under the influence of alcohol, drugs or other substances that affect my experience, free will or influence my judgment.',
-  'The aftercare procedure has been clearly explained to me and I understand which actions I have to perform and what precautions I should take. I received my copy of the aftercare procedure.',
-  'I agree that the piercing as described is carried out by the named artist.',
-  'I confirm that the artist may keep this consent form on file.',
-  'I confirm that I have given the above information and statements in good faith and that they are correct.'
+  'Ich habe die Information "Informationen für den Kunden zum Einverständnisbogen" zur Kenntnis genommen.',
+  'Ich wurde über die möglichen Risiken und Komplikationen im Zusammenhang mit dem Piercen informiert und habe die Informationen verstanden.',
+  'Ich stehe derzeit nicht unter dem Einfluss von Alkohol, Drogen oder anderen Substanzen, die mein Erleben, meinen freien Willen oder mein Urteilsvermögen beeinträchtigen könnten.',
+  'Die Nachpflege wurde mir klar erklärt und ich verstehe, welche Maßnahmen ich ergreifen und welche Vorsichtsmaßnahmen ich treffen muss. Ich habe meine Kopie der Nachpflegeanleitung erhalten.',
+  'Ich erkläre mich damit einverstanden, dass die beschriebene Piercing-Maßnahme von dem genannten Artist durchgeführt wird.',
+  'Ich bestätige, dass der Artist diesen Einverständnisbogen zu den Unterlagen nehmen darf.',
+  'Ich bestätige, dass ich die oben genannten Informationen und Erklärungen nach bestem Wissen und Gewissen abgegeben habe und dass diese korrekt sind.'
 ];
 
 const PIERCING_ARTIST_DECLARATION = [
-  'I confirm that piercing is done under hygienic conditions with suitable sterile instruments and safe techniques and according to standard requirements.',
-  'I confirm that a copy of this signed consent form has been presented to the client and that the client has been advised to keep the information.'
+  'Ich bestätige, dass das Piercen unter hygienischen Bedingungen mit geeigneten sterilen Instrumenten und sicheren Techniken gemäß den Standardanforderungen erfolgt.',
+  'Ich bestätige, dass dem Kunden eine Kopie dieses unterzeichneten Einverständnisbogens ausgehändigt wurde und der Kunde angewiesen wurde, die Informationen aufzubewahren.'
 ];
 
-const PIERCING_MEDIA_CONSENT = 'I allow all my images taken and recorded in the studio to be shared on social media.';
+const PIERCING_MEDIA_CONSENT = 'Ich erlaube, dass alle meine im Studio aufgenommenen Bilder in den sozialen Medien geteilt werden.';
 
-const GDPR_TEXT = `In accordance with GDPR (General Data Protection Regulation), your personal data will be processed solely for the purpose of this consent form and studio records. Your data will be stored securely and will not be shared with third parties without your explicit consent. This includes your name, contact information, date of birth, and health-related data necessary for the procedure.`;
+const PIERCING_MARKETING_CONSENT = 'Ich erkläre mich damit einverstanden, Informationsmitteilungen und Marketingkampagnen vom Studio zu erhalten.';
+
+const GDPR_TEXT = `In Übereinstimmung mit der DSGVO (Datenschutz-Grundverordnung) werden Ihre personenbezogenen Daten ausschließlich zum Zweck dieses Einverständnisbogens und der Unterlagen des Studios verarbeitet. Ihre Daten werden sicher gespeichert und ohne Ihre ausdrückliche Zustimmung nicht an Dritte weitergegeben. Dies umfasst Ihren Namen, Ihre Kontaktinformationen, Ihr Geburtsdatum und gesundheitsbezogene Daten, die für den Eingriff erforderlich sind.`;
 
 export function PiercingConsentForm({
   initialData,
@@ -92,7 +93,6 @@ export function PiercingConsentForm({
     parent_name: initialData?.parent_name || '',
     parent_signature: initialData?.parent_signature || null,
     accepted_terms: initialData?.accepted_terms ?? true,
-    gdpr_email_consent: initialData?.gdpr_email_consent ?? false,
     client_signature: initialData?.client_signature || null,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -115,11 +115,11 @@ export function PiercingConsentForm({
     <div className="space-y-6">
       {/* Client Info */}
       <Card>
-        <CardHeader><CardTitle>Client Information</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Kundeninformationen</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label>First Name <span className="text-rose-500 font-bold">*</span></Label>
+              <Label>Vorname <span className="text-rose-500 font-bold">*</span></Label>
               <Input
                 value={form.first_name}
                 onChange={e => {
@@ -133,7 +133,7 @@ export function PiercingConsentForm({
               {errors.first_name && <p className="text-xs text-destructive mt-1">{errors.first_name}</p>}
             </div>
             <div className="space-y-2">
-              <Label>Last Name <span className="text-rose-500 font-bold">*</span></Label>
+              <Label>Nachname <span className="text-rose-500 font-bold">*</span></Label>
               <Input
                 value={form.last_name}
                 onChange={e => {
@@ -149,7 +149,7 @@ export function PiercingConsentForm({
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label>Email Address <span className="text-rose-500 font-bold">*</span></Label>
+              <Label>E-Mail-Adresse <span className="text-rose-500 font-bold">*</span></Label>
               <Input
                 type="email"
                 value={form.email}
@@ -161,7 +161,7 @@ export function PiercingConsentForm({
               {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
             </div>
             <div className="space-y-2">
-              <Label>Phone Number <span className="text-muted-foreground text-xs">(optional)</span></Label>
+              <Label>Telefonnummer <span className="text-muted-foreground text-xs">(optional)</span></Label>
               <Input
                 value={form.phone || ''}
                 onChange={e => update('phone', e.target.value || null)}
@@ -180,7 +180,7 @@ export function PiercingConsentForm({
             disabled={isReadOnly}
           />
           <div className="space-y-2">
-            <Label className="flex items-center gap-2">Date of Birth <span className="text-rose-500 font-bold">*</span></Label>
+            <Label className="flex items-center gap-2">Geburtsdatum <span className="text-rose-500 font-bold">*</span></Label>
             <DateOfBirthSelect
               value={form.date_of_birth}
               onChange={v => {
@@ -193,17 +193,17 @@ export function PiercingConsentForm({
           </div>
           {age !== null && (
             <p className="text-sm text-muted-foreground">
-              Age: {age} years old
-              {isMinor && <span className="text-primary font-medium ml-2">(Parent/guardian consent required)</span>}
+              Alter: {age} Jahre alt
+              {isMinor && <span className="text-primary font-medium ml-2">(Einwilligung der Eltern/Erziehungsberechtigten erforderlich)</span>}
             </p>
           )}
           <div className="space-y-2">
             <Label className="flex items-center gap-2">
-              Gender <span className="text-rose-500 font-bold">*</span>
+              Geschlecht <span className="text-rose-500 font-bold">*</span>
             </Label>
             {errors.gender && <p className="text-xs text-destructive mb-2">{errors.gender}</p>}
             <div className="flex gap-2">
-              {['Male', 'Female', 'Other'].map(g => (
+              {['Männlich', 'Weiblich', 'Sonstiges'].map(g => (
                 <button
                   key={g}
                   type="button"
@@ -236,14 +236,14 @@ export function PiercingConsentForm({
 
       {/* Piercing Details */}
       <Card>
-        <CardHeader><CardTitle>Piercing Details</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Piercing-Details</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label className="flex items-center gap-2">Piercing Type <span className="text-rose-500 font-bold">*</span></Label>
+            <Label className="flex items-center gap-2">Piercing-Art <span className="text-rose-500 font-bold">*</span></Label>
             <Select
               value={piercingType || ''}
               onValueChange={v => {
-                if (v === 'Other') {
+                if (v === 'Sonstiges') {
                   update('body_area', form.body_area_other || '');
                 } else {
                   update('body_area', v);
@@ -252,14 +252,14 @@ export function PiercingConsentForm({
               }}
               disabled={isReadOnly}
             >
-              <SelectTrigger><SelectValue placeholder="Select piercing type" /></SelectTrigger>
+              <SelectTrigger><SelectValue placeholder="Piercing-Art auswählen" /></SelectTrigger>
               <SelectContent>
                 {PIERCING_TYPES.map(p => (
                   <SelectItem key={p} value={p}>{p}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            {piercingType === 'Other' && (
+            {piercingType === 'Sonstiges' && (
               <Input
                 className="mt-2"
                 value={form.body_area_other || (form.body_area && !PIERCING_TYPES.includes(form.body_area as any) ? form.body_area : '')}
@@ -268,7 +268,7 @@ export function PiercingConsentForm({
                   update('body_area', e.target.value);
                 }}
                 disabled={isReadOnly}
-                placeholder="Please specify piercing type..."
+                placeholder="Bitte Piercing-Art angeben..."
               />
             )}
           </div>
@@ -287,7 +287,7 @@ export function PiercingConsentForm({
       {/* Consent & GDPR Confirmation */}
       <Card className="border-accent/20 bg-accent/5 overflow-hidden">
         <CardHeader className="pb-3">
-          <CardTitle className="text-xl">Consent Confirmation</CardTitle>
+          <CardTitle className="text-xl">Einwilligungsbestätigung</CardTitle>
           <div className="h-px bg-border/40 w-full mt-2" />
         </CardHeader>
         <CardContent className="space-y-6 pt-0 mt-4">
@@ -296,13 +296,13 @@ export function PiercingConsentForm({
               <DialogTrigger asChild>
                 <Button variant="outline" className="h-11 px-6 bg-background/50 backdrop-blur-sm border-border/60 hover:border-accent/50 hover:bg-accent/5 transition-all gap-2 group">
                   <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-accent transition-colors" />
-                  Read full consent form
+                  Einverständnisbogen lesen
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto bg-background/95 backdrop-blur-xl border-accent/20">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl font-bold text-center border-b pb-4 mb-6 uppercase">Piercing Consent Form</DialogTitle>
-                </DialogHeader>
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl font-bold text-center border-b pb-4 mb-6 uppercase">Piercing Einverständniserklärung</DialogTitle>
+                  </DialogHeader>
                 <div className="space-y-8 py-2">
                   <div className="text-center space-y-1 text-sm text-muted-foreground mb-8">
                     <p className="font-bold text-foreground">Cleopatra Ink Tattoo & Piercing</p>
@@ -311,7 +311,7 @@ export function PiercingConsentForm({
                   </div>
 
                   <section className="space-y-4">
-                    <h3 className="font-bold text-lg tracking-tight uppercase border-l-4 border-accent pl-3">Client Declaration</h3>
+                    <h3 className="font-bold text-lg tracking-tight uppercase border-l-4 border-accent pl-3">Kundenerklärung</h3>
                     <ul className="space-y-3">
                       {PIERCING_CLIENT_DECLARATION.map((point, i) => (
                         <li key={i} className="flex gap-3 text-sm leading-relaxed text-foreground/80">
@@ -323,7 +323,7 @@ export function PiercingConsentForm({
                   </section>
 
                   <section className="space-y-4 pt-4 border-t border-border/40">
-                    <h3 className="font-bold text-lg tracking-tight uppercase border-l-4 border-accent pl-3">Artist Declaration</h3>
+                    <h3 className="font-bold text-lg tracking-tight uppercase border-l-4 border-accent pl-3">Erklärung des Artists</h3>
                     <ul className="space-y-3">
                       {PIERCING_ARTIST_DECLARATION.map((point, i) => (
                         <li key={i} className="flex gap-3 text-sm leading-relaxed text-foreground/80">
@@ -335,22 +335,23 @@ export function PiercingConsentForm({
                   </section>
 
                   <section className="space-y-4 pt-4 border-t border-border/40">
-                    <h3 className="font-bold text-lg tracking-tight uppercase border-l-4 border-accent pl-3">Media & Image Consent</h3>
+                    <h3 className="font-bold text-lg tracking-tight uppercase border-l-4 border-accent pl-3">Einwilligung zu Bildaufnahmen</h3>
                     <p className="text-sm leading-relaxed text-foreground/80 pl-2 italic">
                       {PIERCING_MEDIA_CONSENT}
                     </p>
                   </section>
 
                   <section className="space-y-4 pt-4 border-t border-border/40">
-                    <h3 className="font-bold text-lg tracking-tight uppercase border-l-4 border-accent pl-3">Email Notifications</h3>
+                    <h3 className="font-bold text-lg tracking-tight uppercase border-l-4 border-accent pl-3">Informationsbenachrichtigungen</h3>
                     <p className="text-sm leading-relaxed text-foreground/80 pl-2">
-                      I accept to receive email campaigns and informational messages from the studio. (Kampanyalardan ve bilgilendirmelerden haberdar olmak için e-posta almayı kabul ediyorum.)
+                      {PIERCING_MARKETING_CONSENT}
                     </p>
                   </section>
 
+
                   <div className="flex justify-center pt-6">
                     <Button variant="secondary" className="px-8" onClick={() => (document.querySelector('[data-state="open"]') as any)?.click()}>
-                      I have read and understand
+                      Ich habe alles gelesen und verstanden
                     </Button>
                   </div>
                 </div>
@@ -361,19 +362,19 @@ export function PiercingConsentForm({
               <DialogTrigger asChild>
                 <Button variant="outline" className="h-11 px-6 bg-background/50 backdrop-blur-sm border-border/60 hover:border-accent/50 hover:bg-accent/5 transition-all gap-2 group">
                   <ShieldCheck className="h-4 w-4 text-muted-foreground group-hover:text-accent transition-colors" />
-                  Read GDPR policy
+                  DSGVO-Richtlinie lesen
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-md bg-background/95 backdrop-blur-xl border-accent/20">
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2 mb-4">
                     <ShieldCheck className="h-5 w-5 text-accent" />
-                    GDPR Data Protection
+                  DSGVO-Datenschutz
                   </DialogTitle>
                 </DialogHeader>
                 <div className="text-sm leading-relaxed text-foreground/80 space-y-4">
                   <p>{GDPR_TEXT}</p>
-                  <p className="text-xs text-muted-foreground italic border-t pt-4">In accordance with GDPR (General Data Protection Regulation), your personal data will be processed solely for the purpose of this consent form and studio records.</p>
+                  <p className="text-xs text-muted-foreground italic border-t pt-4">In Übereinstimmung mit der DSGVO (Datenschutz-Grundverordnung) werden Ihre personenbezogenen Daten ausschließlich zum Zweck dieses Einverständnisbogens und der Unterlagen des Studios verarbeitet.</p>
                 </div>
               </DialogContent>
             </Dialog>
@@ -397,32 +398,9 @@ export function PiercingConsentForm({
               </div>
               <div className="space-y-1">
                 <Label className="text-base font-medium text-foreground cursor-pointer group-hover:text-accent transition-colors">
-                  I have read and understood the consent form. <span className="text-rose-500 font-bold">*</span>
+                  Ich habe den Einverständnisbogen gelesen und verstanden. <span className="text-rose-500 font-bold">*</span>
                 </Label>
-                <p className="text-xs text-muted-foreground">Tüm maddeleri okudum ve uygulama risklerini kabul ediyorum.</p>
-              </div>
-            </div>
-
-            <div 
-              className="flex items-start gap-4 p-3 rounded-lg hover:bg-accent/5 transition-colors cursor-pointer group"
-              onClick={() => !isReadOnly && update('gdpr_email_consent', !form.gdpr_email_consent)}
-            >
-              <div
-                className={`mt-0.5 h-6 w-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-300 ${
-                  form.gdpr_email_consent
-                    ? 'border-accent bg-accent scale-105 shadow-sm shadow-accent/20'
-                    : 'border-input bg-background border-border/60'
-                }`}
-              >
-                {form.gdpr_email_consent && (
-                  <CheckCircle className="h-4 w-4 text-accent-foreground" />
-                )}
-              </div>
-              <div className="space-y-1">
-                <Label className="text-base font-medium text-foreground cursor-pointer group-hover:text-accent transition-colors">
-                  I accept to receive email campaigns and informational messages.
-                </Label>
-                <p className="text-xs text-muted-foreground">Kampanyalardan ve bilgilendirmelerden haberdar olmak için e-posta ve mesaj (WhatsApp) almayı kabul ediyorum.</p>
+                <p className="text-xs text-muted-foreground">Ich habe alle Punkte gelesen und akzeptiere die Risiken der Anwendung.</p>
               </div>
             </div>
           </div>
@@ -431,7 +409,7 @@ export function PiercingConsentForm({
 
       {/* Signature */}
       <Card>
-        <CardHeader><CardTitle>Signature</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Unterschrift</CardTitle></CardHeader>
         <CardContent>
           <SignaturePad
             value={form.client_signature}
@@ -446,18 +424,18 @@ export function PiercingConsentForm({
         <div className="flex gap-3 justify-end pb-8">
           <Button onClick={() => {
             const newErrors: Record<string, string> = {};
-            if (!form.first_name.trim()) newErrors.first_name = 'First name is required';
-            if (!form.last_name.trim()) newErrors.last_name = 'Last name is required';
-            if (!form.email.trim()) newErrors.email = 'Email is required';
-            else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) newErrors.email = 'Invalid email address';
-            if (!form.country) newErrors.country = 'Country is required';
-            if (!form.city) newErrors.city = 'City is required';
-            if (!form.postal_code) newErrors.postal_code = 'Postal code is required';
-            if (!form.date_of_birth) newErrors.dob = 'Date of birth is required';
-            if (!form.gender) newErrors.gender = 'Gender is required';
-            if (!form.body_area) newErrors.body_area = 'Piercing type is required';
-            if (!form.client_signature) newErrors.signature = 'Signature is required';
-            if (!form.accepted_terms) newErrors.terms = 'You must accept the terms';
+            if (!form.first_name.trim()) newErrors.first_name = 'Vorname ist erforderlich';
+            if (!form.last_name.trim()) newErrors.last_name = 'Nachname ist erforderlich';
+            if (!form.email.trim()) newErrors.email = 'E-Mail ist erforderlich';
+            else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) newErrors.email = 'Ungültige E-Mail-Adresse';
+            if (!form.country) newErrors.country = 'Land ist erforderlich';
+            if (!form.city) newErrors.city = 'Stadt ist erforderlich';
+            if (!form.postal_code) newErrors.postal_code = 'Postleitzahl ist erforderlich';
+            if (!form.date_of_birth) newErrors.dob = 'Geburtsdatum ist erforderlich';
+            if (!form.gender) newErrors.gender = 'Geschlecht ist erforderlich';
+            if (!form.body_area) newErrors.body_area = 'Piercing-Art ist erforderlich';
+            if (!form.client_signature) newErrors.signature = 'Unterschrift ist erforderlich';
+            if (!form.accepted_terms) newErrors.terms = 'Sie müssen die Bedingungen akzeptieren';
             if (Object.keys(newErrors).length > 0) {
               setErrors(newErrors);
               return;
@@ -465,7 +443,7 @@ export function PiercingConsentForm({
             onSave(form);
           }} disabled={saving}>
             {saving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-            <Save className="h-4 w-4 mr-2" /> Save
+            <Save className="h-4 w-4 mr-2" /> Speichern
           </Button>
         </div>
       )}

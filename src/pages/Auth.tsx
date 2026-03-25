@@ -26,13 +26,13 @@ export default function Auth() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      toast({ title: 'Error', description: 'Please fill in all fields.', variant: 'destructive' });
+      toast({ title: 'Fehler', description: 'Bitte füllen Sie alle Felder aus.', variant: 'destructive' });
       return;
     }
     setSubmitting(true);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
-      toast({ title: 'Login failed', description: error.message, variant: 'destructive' });
+      toast({ title: 'Anmeldung fehlgeschlagen', description: error.message, variant: 'destructive' });
     }
     setSubmitting(false);
   };
@@ -52,13 +52,13 @@ export default function Auth() {
           <div className="mx-auto w-16 h-16 mb-2">
             <img src={logo} alt="Logo" className="w-full h-full object-contain" />
           </div>
-          <CardTitle className="text-xl font-semibold">Consent Manager</CardTitle>
-          <CardDescription>Sign in to your staff account</CardDescription>
+          <CardTitle className="text-xl font-semibold">Einwilligungs-Manager</CardTitle>
+          <CardDescription>Melden Sie sich mit Ihrem Mitarbeiter-Konto an</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">E-Mail</Label>
               <Input
                 id="email"
                 type="email"
@@ -69,7 +69,7 @@ export default function Auth() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Passwort</Label>
               <Input
                 id="password"
                 type="password"
@@ -81,7 +81,7 @@ export default function Auth() {
             </div>
             <Button type="submit" className="w-full" disabled={submitting}>
               {submitting ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-              Sign in
+              Anmelden
             </Button>
           </form>
         </CardContent>

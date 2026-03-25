@@ -1,7 +1,7 @@
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 
-export const REFERRAL_OPTIONS = ['Instagram', 'Facebook', 'Google', 'Walk-by', 'Other'] as const;
+export const REFERRAL_OPTIONS = ['Instagram', 'Facebook', 'Google', 'Laufkundschaft', 'Sonstiges'] as const;
 
 interface ReferralSourceSectionProps {
   value: string | null;
@@ -20,10 +20,10 @@ export function ReferralSourceSection({
 }: ReferralSourceSectionProps) {
   return (
     <div className="space-y-3">
-      <Label>Where did you find us?</Label>
+      <Label>Wie haben Sie uns gefunden?</Label>
       <div className="flex flex-wrap gap-2">
         {REFERRAL_OPTIONS.map(option => {
-          const isSelected = value === option || (option === 'Other' && value !== null && !REFERRAL_OPTIONS.slice(0, -1).includes(value as any));
+          const isSelected = value === option || (option === 'Sonstiges' && value !== null && !REFERRAL_OPTIONS.slice(0, -1).includes(value as any));
           return (
             <button
               key={option}
@@ -31,8 +31,8 @@ export function ReferralSourceSection({
               disabled={disabled}
               onClick={() => {
                 if (disabled) return;
-                if (option === 'Other') {
-                  onChange(otherValue || 'Other');
+                if (option === 'Sonstiges') {
+                  onChange(otherValue || 'Sonstiges');
                 } else {
                   onChange(option);
                   onOtherChange('');
@@ -49,15 +49,15 @@ export function ReferralSourceSection({
           );
         })}
       </div>
-      {value !== null && !['Instagram', 'Facebook', 'Google', 'Walk-by'].includes(value) && (
+      {value !== null && !['Instagram', 'Facebook', 'Google', 'Laufkundschaft'].includes(value) && (
         <Input
           value={otherValue || (value === 'Other' ? '' : value)}
           onChange={e => {
             onOtherChange(e.target.value);
-            onChange(e.target.value || 'Other');
+            onChange(e.target.value || 'Sonstiges');
           }}
           disabled={disabled}
-          placeholder="Please specify..."
+          placeholder="Bitte angeben..."
           className="mt-2"
         />
       )}

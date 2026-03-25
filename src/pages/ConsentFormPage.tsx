@@ -38,7 +38,7 @@ export default function ConsentFormPage() {
         .single()
         .then(({ data, error }) => {
           if (error || !data) {
-            toast({ title: 'Form not found', variant: 'destructive' });
+            toast({ title: 'Formular nicht gefunden', variant: 'destructive' });
             navigate(-1);
             return;
           }
@@ -53,7 +53,7 @@ export default function ConsentFormPage() {
 
   const saveForm = async (formData: TattooFormData | PiercingFormData, type: ConsentType) => {
     if (!formData.first_name) {
-      toast({ title: 'Error', description: 'Full name is required.', variant: 'destructive' });
+      toast({ title: 'Fehler', description: 'Vollständiger Name ist erforderlich.', variant: 'destructive' });
       return;
     }
 
@@ -74,7 +74,7 @@ export default function ConsentFormPage() {
       body_area: formData.body_area,
       gender: (formData as any).gender || null,
       accepted_terms: formData.accepted_terms,
-      photo_consent: (formData as any).gdpr_email_consent ?? false,
+      photo_consent: true,
       client_signature: formData.client_signature,
       signature_date: formData.client_signature ? new Date().toISOString().split('T')[0] : null,
       reference_notes: formData.referral_source || null,
@@ -94,9 +94,9 @@ export default function ConsentFormPage() {
     }
 
     if (result.error) {
-      toast({ title: 'Save failed', description: result.error.message, variant: 'destructive' });
+      toast({ title: 'Speichern fehlgeschlagen', description: result.error.message, variant: 'destructive' });
     } else {
-      toast({ title: 'Form saved' });
+      toast({ title: 'Formular gespeichert' });
       const dashboardPath = role === 'admin' ? '/admin' : '/designer';
       navigate(dashboardPath, { replace: true });
     }
@@ -133,7 +133,6 @@ export default function ConsentFormPage() {
     body_area: existingForm.body_area,
     procedure_description: existingForm.procedure_description,
     accepted_terms: existingForm.accepted_terms,
-    gdpr_email_consent: existingForm.photo_consent ?? false,
     client_signature: existingForm.client_signature,
     referral_source: existingForm.reference_notes,
     referral_source_other: '',
@@ -142,10 +141,10 @@ export default function ConsentFormPage() {
   } : undefined;
 
   const title = isNew
-    ? `New ${consentType === 'tattoo' ? 'Tattoo' : 'Piercing'} Consent Form`
+    ? `Neuer ${consentType === 'tattoo' ? 'Tattoo' : 'Piercing'}-Einverständnisbogen`
     : isApproved
-      ? 'Approved Form'
-      : `Edit ${consentType === 'tattoo' ? 'Tattoo' : 'Piercing'} Draft`;
+      ? 'Genehmigtes Formular'
+      : `${consentType === 'tattoo' ? 'Tattoo' : 'Piercing'}-Entwurf bearbeiten`;
 
   return (
     <DashboardLayout>
@@ -156,7 +155,7 @@ export default function ConsentFormPage() {
           </Button>
           <div>
             <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-            {isReadOnly && <p className="text-sm text-muted-foreground">This form is approved and read-only.</p>}
+            {isReadOnly && <p className="text-sm text-muted-foreground">Dieses Formular ist genehmigt und schreibgeschützt.</p>}
           </div>
         </div>
 

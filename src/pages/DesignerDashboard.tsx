@@ -61,7 +61,7 @@ export default function DesignerDashboard() {
     
     // Tattoo forms require an artist, piercing forms do not
     if (form?.consent_type === 'tattoo' && !artistId) {
-      toast({ title: 'Error', description: 'Please select an artist before approving.', variant: 'destructive' });
+      toast({ title: 'Fehler', description: 'Bitte wählen Sie einen Artist aus, bevor Sie genehmigen.', variant: 'destructive' });
       return;
     }
     setApprovingId(formId);
@@ -72,7 +72,7 @@ export default function DesignerDashboard() {
       price: price || null,
     }).eq('id', formId);
     if (error) {
-      toast({ title: 'Approval failed', description: error.message, variant: 'destructive' });
+      toast({ title: 'Genehmigung fehlgeschlagen', description: error.message, variant: 'destructive' });
     } else {
       // Generate PDF
       const updatedForm = forms.find(f => f.id === formId);
@@ -91,9 +91,9 @@ export default function DesignerDashboard() {
     setDeletingId(formId);
     const { error } = await supabase.from('consent_forms').delete().eq('id', formId);
     if (error) {
-      toast({ title: 'Delete failed', description: error.message, variant: 'destructive' });
+      toast({ title: 'Löschen fehlgeschlagen', description: error.message, variant: 'destructive' });
     } else {
-      toast({ title: 'Form deleted' });
+      toast({ title: 'Formular gelöscht' });
       fetchData();
     }
     setDeletingId(null);
@@ -118,8 +118,8 @@ export default function DesignerDashboard() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Consent Forms</h1>
-            <p className="text-muted-foreground text-sm mt-1">Create and manage client consent forms</p>
+            <h1 className="text-2xl font-bold tracking-tight">Einverständnisbögen</h1>
+            <p className="text-muted-foreground text-sm mt-1">Kunden-Einverständnisbögen erstellen und verwalten</p>
           </div>
           <div className="flex gap-3">
             <Button onClick={() => navigate('/forms/new?type=tattoo')}>
@@ -135,21 +135,21 @@ export default function DesignerDashboard() {
         <div className="grid gap-4 md:grid-cols-3">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Forms</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Gesamtanzahl</CardTitle>
               <FileText className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent><p className="text-2xl font-bold">{loading ? '—' : totalForms}</p></CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Draft</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Entwurf</CardTitle>
               <Clock className="h-4 w-4 text-status-draft" />
             </CardHeader>
             <CardContent><p className="text-2xl font-bold">{loading ? '—' : draftForms}</p></CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Approved</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">Genehmigt</CardTitle>
               <FileCheck className="h-4 w-4 text-status-approved" />
             </CardHeader>
             <CardContent><p className="text-2xl font-bold">{loading ? '—' : approvedForms}</p></CardContent>
@@ -160,14 +160,14 @@ export default function DesignerDashboard() {
         <div className="flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input className="pl-9" placeholder="Search by client name..." value={search} onChange={e => setSearch(e.target.value)} />
+            <Input className="pl-9" placeholder="Nach Kundenname suchen..." value={search} onChange={e => setSearch(e.target.value)} />
           </div>
           <Select value={filterStatus} onValueChange={setFilterStatus}>
             <SelectTrigger className="w-36"><SelectValue placeholder="Status" /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="draft">Draft</SelectItem>
-              <SelectItem value="approved">Approved</SelectItem>
+              <SelectItem value="all">Alle Status</SelectItem>
+              <SelectItem value="draft">Entwurf</SelectItem>
+              <SelectItem value="approved">Genehmigt</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -178,21 +178,21 @@ export default function DesignerDashboard() {
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Clock className="h-5 w-5 text-status-draft" />
-                Draft Forms ({draftList.length})
+                Entwurfsformulare ({draftList.length})
               </CardTitle>
             </CardHeader>
             <CardContent>
               {draftList.length === 0 ? (
-                <p className="text-sm text-muted-foreground py-6 text-center">No draft forms.</p>
+                <p className="text-sm text-muted-foreground py-6 text-center">Keine Entwürfe vorhanden.</p>
               ) : (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Client Name</TableHead>
-                      <TableHead>Created</TableHead>
-                      <TableHead>Assigned Artist</TableHead>
-                      <TableHead>Price</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
+                      <TableHead>Kundenname</TableHead>
+                      <TableHead>Erstellt</TableHead>
+                      <TableHead>Zuweisung Artist</TableHead>
+                      <TableHead>Preis</TableHead>
+                      <TableHead className="text-right">Aktionen</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -209,7 +209,7 @@ export default function DesignerDashboard() {
                               onValueChange={v => setAssignedArtists(prev => ({ ...prev, [f.id]: v }))}
                             >
                               <SelectTrigger className="w-[160px]">
-                                <SelectValue placeholder="Select Artist" />
+                                <SelectValue placeholder="Artist wählen" />
                               </SelectTrigger>
                               <SelectContent>
                                 {artists.map(a => (
@@ -232,7 +232,7 @@ export default function DesignerDashboard() {
                         <TableCell>
                           <div className="flex items-center justify-end gap-1">
                             <Button variant="ghost" size="sm" onClick={() => navigate(`/forms/${f.id}`)}>
-                              <Pencil className="h-4 w-4 mr-1" /> Edit
+                              <Pencil className="h-4 w-4 mr-1" /> Bearbeiten
                             </Button>
                             <Button
                               size="sm"
@@ -240,7 +240,7 @@ export default function DesignerDashboard() {
                               disabled={approvingId === f.id}
                             >
                               {approvingId === f.id ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <CheckCircle className="h-4 w-4 mr-1" />}
-                              Approve
+                              Genehmigen
                             </Button>
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
@@ -250,9 +250,9 @@ export default function DesignerDashboard() {
                               </AlertDialogTrigger>
                               <AlertDialogContent>
                                 <AlertDialogHeader>
-                                  <AlertDialogTitle>Delete Form</AlertDialogTitle>
+                                  <AlertDialogTitle>Formular löschen</AlertDialogTitle>
                                   <AlertDialogDescription>
-                                    Are you sure you want to delete the form for <strong>{f.first_name} {f.last_name}</strong>? This cannot be undone.
+                                    Sind Sie sicher, dass Sie das Formular für <strong>{f.first_name} {f.last_name}</strong> löschen möchten? Dies kann nicht rückgängig gemacht werden.
                                   </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
@@ -283,21 +283,21 @@ export default function DesignerDashboard() {
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <FileCheck className="h-5 w-5 text-status-approved" />
-                Approved Forms ({approvedList.length})
+                Genehmigte Formulare ({approvedList.length})
               </CardTitle>
             </CardHeader>
             <CardContent>
               {approvedList.length === 0 ? (
-                <p className="text-sm text-muted-foreground py-6 text-center">No approved forms.</p>
+                <p className="text-sm text-muted-foreground py-6 text-center">Keine genehmigten Formulare.</p>
               ) : (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Client Name</TableHead>
-                      <TableHead>Type</TableHead>
+                      <TableHead>Kundenname</TableHead>
+                      <TableHead>Art</TableHead>
                       <TableHead>Artist</TableHead>
-                      <TableHead>Price</TableHead>
-                      <TableHead>Approved</TableHead>
+                      <TableHead>Preis</TableHead>
+                      <TableHead>Genehmigt</TableHead>
                       <TableHead></TableHead>
                     </TableRow>
                   </TableHeader>
@@ -311,7 +311,7 @@ export default function DesignerDashboard() {
                           <TableCell>{artist?.name || '—'}</TableCell>
                           <TableCell>{f.price ? `€${f.price}` : '—'}</TableCell>
                           <TableCell className="text-muted-foreground text-sm">
-                            {f.approved_at ? new Date(f.approved_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
+                            {f.approved_at ? new Date(f.approved_at).toLocaleDateString('de-DE', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
                           </TableCell>
                           <TableCell>
                             <Button variant="ghost" size="sm" onClick={() => navigate(`/forms/${f.id}`)}>

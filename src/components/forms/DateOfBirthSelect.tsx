@@ -36,10 +36,10 @@ export function DateOfBirthSelect({ value, onChange, disabled }: DateOfBirthSele
 
   return (
     <div className="space-y-2">
-      <Label>Date of Birth</Label>
+      <Label>Geburtsdatum</Label>
       <div className="grid grid-cols-3 gap-2">
         <Select value={year} onValueChange={v => handleChange(v, month, day)} disabled={disabled}>
-          <SelectTrigger><SelectValue placeholder="Year" /></SelectTrigger>
+          <SelectTrigger><SelectValue placeholder="Jahr" /></SelectTrigger>
           <SelectContent className="max-h-[200px] overflow-y-auto">
             {generateYears().map(y => (
               <SelectItem key={y} value={String(y)}>{y}</SelectItem>
@@ -47,7 +47,7 @@ export function DateOfBirthSelect({ value, onChange, disabled }: DateOfBirthSele
           </SelectContent>
         </Select>
         <Select value={month} onValueChange={v => handleChange(year, v, day)} disabled={disabled}>
-          <SelectTrigger><SelectValue placeholder="Month" /></SelectTrigger>
+          <SelectTrigger><SelectValue placeholder="Monat" /></SelectTrigger>
           <SelectContent className="max-h-[200px] overflow-y-auto">
             {MONTHS.map((m, i) => (
               <SelectItem key={m} value={String(i + 1)}>{m}</SelectItem>
@@ -55,7 +55,7 @@ export function DateOfBirthSelect({ value, onChange, disabled }: DateOfBirthSele
           </SelectContent>
         </Select>
         <Select value={day} onValueChange={v => handleChange(year, month, v)} disabled={disabled}>
-          <SelectTrigger><SelectValue placeholder="Day" /></SelectTrigger>
+          <SelectTrigger><SelectValue placeholder="Tag" /></SelectTrigger>
           <SelectContent className="max-h-[200px] overflow-y-auto">
             {generateDays().map(d => (
               <SelectItem key={d} value={String(d)}>{String(d).padStart(2, '0')}</SelectItem>

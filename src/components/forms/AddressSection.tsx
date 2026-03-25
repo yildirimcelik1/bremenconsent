@@ -24,7 +24,7 @@ export function AddressSection({
   return (
     <div className="grid gap-4 md:grid-cols-3">
       <div className="space-y-2">
-        <Label>Country <span className="text-rose-500 font-bold">*</span></Label>
+        <Label>Land <span className="text-rose-500 font-bold">*</span></Label>
         <Select value={selectedCountry} onValueChange={v => { onCountryChange(v); onCityChange(null); }} disabled={disabled}>
           <SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>
@@ -35,10 +35,10 @@ export function AddressSection({
         </Select>
       </div>
       <div className="space-y-2">
-        <Label>City <span className="text-rose-500 font-bold">*</span></Label>
+        <Label>Stadt <span className="text-rose-500 font-bold">*</span></Label>
         {cities ? (
           <Select value={city || ''} onValueChange={v => onCityChange(v)} disabled={disabled}>
-            <SelectTrigger><SelectValue placeholder="Select city" /></SelectTrigger>
+            <SelectTrigger><SelectValue placeholder="Stadt auswählen" /></SelectTrigger>
             <SelectContent>
               {cities.map(c => (
                 <SelectItem key={c} value={c}>{c}</SelectItem>
@@ -46,11 +46,11 @@ export function AddressSection({
             </SelectContent>
           </Select>
         ) : (
-          <Input value={city || ''} onChange={e => onCityChange(e.target.value || null)} disabled={disabled} placeholder="Enter city" />
+          <Input value={city || ''} onChange={e => onCityChange(e.target.value || null)} disabled={disabled} placeholder="Stadt eingeben" />
         )}
       </div>
       <div className="space-y-2">
-        <Label>Postal Code <span className="text-rose-500 font-bold">*</span></Label>
+        <Label>Postleitzahl <span className="text-rose-500 font-bold">*</span></Label>
         <Input value={postalCode || ''} onChange={e => onPostalCodeChange(e.target.value || null)} disabled={disabled} placeholder="e.g. 28195" />
       </div>
     </div>

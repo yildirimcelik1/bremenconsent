@@ -11,8 +11,8 @@ interface SuccessNotificationProps {
 export function SuccessNotification({
   show,
   onClose,
-  title = 'Successfully Approved',
-  description = 'The consent form has been approved and PDF generated.',
+  title = 'Erfolgreich genehmigt',
+  description = 'Der Einverständnisbogen wurde genehmigt und das PDF erstellt.',
 }: SuccessNotificationProps) {
   const [visible, setVisible] = useState(false);
   const [animating, setAnimating] = useState(false);

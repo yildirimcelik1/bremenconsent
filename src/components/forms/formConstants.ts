@@ -1,6 +1,6 @@
 export const COUNTRIES = [
-  'Germany', 'Austria', 'Switzerland', 'Turkey', 'Netherlands', 'Belgium',
-  'France', 'Italy', 'Spain', 'Poland', 'United Kingdom', 'United States', 'Other',
+  'Deutschland', 'Österreich', 'Schweiz', 'Türkei', 'Niederlande', 'Belgien',
+  'Frankreich', 'Italien', 'Spanien', 'Polen', 'Vereinigtes Königreich', 'Vereinigte Staaten', 'Sonstiges',
 ];
 
 export const COUNTRY_CITIES: Record<string, string[]> = {
@@ -125,22 +125,22 @@ export const COUNTRY_CITIES: Record<string, string[]> = {
 };
 
 export const TATTOO_PLACEMENTS = [
-  'Arm', 'Forearm', 'Upper Arm', 'Shoulder', 'Back', 'Chest',
-  'Abdomen / Stomach', 'Hip', 'Leg', 'Thigh', 'Calf', 'Foot / Ankle',
-  'Hand / Fingers', 'Neck', 'Face', 'Lips', 'Other',
+  'Arm', 'Unterarm', 'Oberarm', 'Schulter', 'Rücken', 'Brust',
+  'Bauch', 'Hüfte', 'Bein', 'Oberschenkel', 'Wade', 'Fuß / Knöchel',
+  'Hand / Finger', 'Nacken', 'Gesicht', 'Lippen', 'Sonstiges',
 ] as const;
 
 export const PIERCING_TYPES = [
-  'Earlobe', 'Helix', 'Tragus', 'Conch', 'Daith', 'Rook', 'Industrial',
-  'Nose (Nostril)', 'Septum', 'Bridge', 'Eyebrow', 'Lip (Labret)',
-  'Monroe / Madonna', 'Medusa (Philtrum)', 'Snake Bites', 'Tongue',
-  'Smiley', 'Navel (Belly Button)', 'Nipple', 'Surface', 'Dermal / Microdermal',
-  'Other',
+  'Ohrläppchen', 'Helix', 'Tragus', 'Conch', 'Daith', 'Rook', 'Industrial',
+  'Nase (Nostril)', 'Septum', 'Bridge', 'Augenbraue', 'Lippe (Labret)',
+  'Monroe / Madonna', 'Medusa (Philtrum)', 'Snake Bites', 'Zunge',
+  'Smiley', 'Bauchnabel', 'Brustwarze', 'Oberflächenpiercing', 'Dermal / Microdermal',
+  'Sonstiges',
 ] as const;
 
 export const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
+  'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+  'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember',
 ];
 
 export function generateYears() {
