@@ -84,7 +84,7 @@ export function TattooConsentForm({
     last_name: initialData?.last_name || '',
     email: initialData?.email || '',
     phone: initialData?.phone || null,
-    country: initialData?.country || 'Germany',
+    country: initialData?.country || 'Deutschland',
     city: initialData?.city || 'Bremen',
     postal_code: initialData?.postal_code || null,
     date_of_birth: initialData?.date_of_birth || null,
@@ -450,7 +450,8 @@ export function TattooConsentForm({
             if (!form.city) newErrors.city = 'Stadt ist erforderlich';
             if (!form.postal_code) newErrors.postal_code = 'Postleitzahl ist erforderlich';
             if (!form.date_of_birth) newErrors.dob = 'Geburtsdatum ist erforderlich';
-            if (!form.gender) newErrors.gender = 'Geschlecht ist erforderlich';
+            if (!form.phone) newErrors.phone = 'Telefonnummer ist erforderlich';
+    if (!form.gender) newErrors.gender = 'Geschlecht ist erforderlich';
             if (!form.body_area) newErrors.body_area = 'Tattoo-Platzierung ist erforderlich';
             if (!form.client_signature) newErrors.signature = 'Unterschrift ist erforderlich';
             if (!form.accepted_terms) newErrors.terms = 'Sie müssen die Bedingungen akzeptieren';

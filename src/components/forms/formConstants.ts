@@ -4,7 +4,7 @@ export const COUNTRIES = [
 ];
 
 export const COUNTRY_CITIES: Record<string, string[]> = {
-  Germany: [
+  Deutschland: [
     'Bremen', 'Berlin', 'Hamburg', 'Munich', 'Cologne', 'Frankfurt', 'Stuttgart',
     'Düsseldorf', 'Dortmund', 'Essen', 'Leipzig', 'Dresden', 'Hanover', 'Nuremberg',
     'Duisburg', 'Bochum', 'Wuppertal', 'Bielefeld', 'Bonn', 'Münster', 'Mannheim',
@@ -17,21 +17,21 @@ export const COUNTRY_CITIES: Record<string, string[]> = {
     'Offenbach', 'Pforzheim', 'Recklinghausen', 'Bottrop', 'Trier', 'Bremerhaven',
     'Reutlingen', 'Koblenz', 'Jena', 'Erlangen', 'Remscheid', 'Heilbronn',
   ],
-  Austria: [
+  Österreich: [
     'Vienna', 'Graz', 'Linz', 'Salzburg', 'Innsbruck', 'Klagenfurt', 'Villach',
     'Wels', 'St. Pölten', 'Dornbirn', 'Wiener Neustadt', 'Steyr', 'Feldkirch',
     'Bregenz', 'Leonding', 'Klosterneuburg', 'Baden', 'Wolfsberg', 'Leoben',
     'Krems', 'Traun', 'Amstetten', 'Lustenau', 'Kapfenberg', 'Mödling',
     'Hallein', 'Kufstein', 'Braunau', 'Schwechat', 'Stockerau',
   ],
-  Switzerland: [
+  Schweiz: [
     'Zurich', 'Geneva', 'Basel', 'Lausanne', 'Bern', 'Winterthur', 'Lucerne',
     'St. Gallen', 'Lugano', 'Biel/Bienne', 'Thun', 'Köniz', 'La Chaux-de-Fonds',
     'Schaffhausen', 'Fribourg', 'Chur', 'Neuchâtel', 'Vernier', 'Uster', 'Sion',
     'Lancy', 'Emmen', 'Yverdon', 'Kriens', 'Rapperswil-Jona', 'Zug', 'Dübendorf',
     'Montreux', 'Dietikon', 'Frauenfeld',
   ],
-  Turkey: [
+  Türkei: [
     'Istanbul', 'Ankara', 'Izmir', 'Bursa', 'Antalya', 'Adana', 'Gaziantep',
     'Konya', 'Mersin', 'Diyarbakır', 'Kayseri', 'Eskişehir', 'Samsun',
     'Denizli', 'Şanlıurfa', 'Malatya', 'Kahramanmaraş', 'Erzurum', 'Van',
@@ -46,7 +46,7 @@ export const COUNTRY_CITIES: Record<string, string[]> = {
     'Amasya', 'Çankırı', 'Bilecik', 'Kütahya', 'Uşak', 'Isparta', 'Burdur',
     'Karaman', 'Kırıkkale', 'Osmaniye', 'Adıyaman', 'Mardin', 'Yalova',
   ],
-  Netherlands: [
+  Niederlande: [
     'Amsterdam', 'Rotterdam', 'The Hague', 'Utrecht', 'Eindhoven', 'Groningen',
     'Tilburg', 'Almere', 'Breda', 'Nijmegen', 'Arnhem', 'Haarlem', 'Enschede',
     'Haarlemmermeer', 'Zaanstad', 'Amersfoort', "'s-Hertogenbosch", 'Apeldoorn',
@@ -54,13 +54,13 @@ export const COUNTRY_CITIES: Record<string, string[]> = {
     'Emmen', 'Westland', 'Alphen aan den Rijn', 'Ede', 'Delft', 'Deventer',
     'Alkmaar', 'Heerlen', 'Venlo', 'Hilversum', 'Oss', 'Roosendaal',
   ],
-  Belgium: [
+  Belgien: [
     'Brussels', 'Antwerp', 'Ghent', 'Charleroi', 'Liège', 'Bruges', 'Namur',
     'Leuven', 'Mons', 'Mechelen', 'Aalst', 'La Louvière', 'Hasselt', 'Kortrijk',
     'Sint-Niklaas', 'Ostend', 'Tournai', 'Genk', 'Seraing', 'Roeselare',
     'Mouscron', 'Verviers', 'Dendermonde', 'Beringen', 'Turnhout', 'Waregem',
   ],
-  France: [
+  Frankreich: [
     'Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice', 'Nantes', 'Strasbourg',
     'Montpellier', 'Bordeaux', 'Lille', 'Rennes', 'Reims', 'Saint-Étienne',
     'Toulon', 'Le Havre', 'Grenoble', 'Dijon', 'Angers', 'Nîmes', 'Villeurbanne',
@@ -69,7 +69,7 @@ export const COUNTRY_CITIES: Record<string, string[]> = {
     'Rouen', 'Mulhouse', 'Caen', 'Nancy', 'Argenteuil', 'Montreuil',
     'Saint-Denis', 'Avignon', 'Poitiers', 'Cannes', 'Antibes', 'Versailles',
   ],
-  Italy: [
+  Italien: [
     'Rome', 'Milan', 'Naples', 'Turin', 'Palermo', 'Genoa', 'Bologna',
     'Florence', 'Bari', 'Catania', 'Venice', 'Verona', 'Messina', 'Padua',
     'Trieste', 'Brescia', 'Taranto', 'Prato', 'Parma', 'Modena', 'Reggio Calabria',
@@ -78,7 +78,7 @@ export const COUNTRY_CITIES: Record<string, string[]> = {
     'Bergamo', 'Pescara', 'Trento', 'Forlì', 'Vicenza', 'Terni', 'Bolzano',
     'Novara', 'Piacenza', 'Ancona', 'Lecce', 'Udine', 'La Spezia', 'Arezzo',
   ],
-  Spain: [
+  Spanien: [
     'Madrid', 'Barcelona', 'Valencia', 'Seville', 'Zaragoza', 'Málaga', 'Murcia',
     'Palma de Mallorca', 'Las Palmas', 'Bilbao', 'Alicante', 'Córdoba', 'Valladolid',
     'Vigo', 'Gijón', "L'Hospitalet", 'Vitoria-Gasteiz', 'A Coruña', 'Granada',
@@ -90,7 +90,7 @@ export const COUNTRY_CITIES: Record<string, string[]> = {
     'León', 'Cádiz', 'Lleida', 'Jaén', 'Ourense', 'Lugo', 'Girona', 'Toledo',
     'Torrejón de Ardoz', 'Reus', 'Mataró', 'Torrevieja', 'Benidorm',
   ],
-  Poland: [
+  Polen: [
     'Warsaw', 'Kraków', 'Łódź', 'Wrocław', 'Poznań', 'Gdańsk', 'Szczecin',
     'Bydgoszcz', 'Lublin', 'Białystok', 'Katowice', 'Gdynia', 'Częstochowa',
     'Radom', 'Toruń', 'Sosnowiec', 'Rzeszów', 'Kielce', 'Gliwice', 'Olsztyn',
@@ -98,7 +98,7 @@ export const COUNTRY_CITIES: Record<string, string[]> = {
     'Opole', 'Tychy', 'Gorzów Wielkopolski', 'Elbląg', 'Płock', 'Dąbrowa Górnicza',
     'Wałbrzych', 'Włocławek', 'Tarnów', 'Chorzów', 'Koszalin', 'Kalisz', 'Legnica',
   ],
-  'United Kingdom': [
+  'Vereinigtes Königreich': [
     'London', 'Birmingham', 'Manchester', 'Leeds', 'Glasgow', 'Liverpool',
     'Newcastle', 'Sheffield', 'Bristol', 'Edinburgh', 'Leicester', 'Coventry',
     'Nottingham', 'Kingston upon Hull', 'Bradford', 'Cardiff', 'Belfast',
@@ -109,7 +109,7 @@ export const COUNTRY_CITIES: Record<string, string[]> = {
     'Dundee', 'Inverness', 'Stirling', 'Cheltenham', 'Chester', 'Ipswich',
     'Middlesbrough', 'Blackpool', 'Bolton', 'Bournemouth', 'Peterborough',
   ],
-  'United States': [
+  'Vereinigte Staaten': [
     'New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia',
     'San Antonio', 'San Diego', 'Dallas', 'San Jose', 'Austin', 'Jacksonville',
     'Fort Worth', 'Columbus', 'Charlotte', 'Indianapolis', 'San Francisco',

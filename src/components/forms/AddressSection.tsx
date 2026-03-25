@@ -18,7 +18,7 @@ export function AddressSection({
   onCountryChange, onCityChange, onPostalCodeChange,
   disabled,
 }: AddressSectionProps) {
-  const selectedCountry = country || 'Germany';
+  const selectedCountry = country || 'Deutschland';
   const cities = COUNTRY_CITIES[selectedCountry];
 
   return (
@@ -38,7 +38,7 @@ export function AddressSection({
         <Label>Stadt <span className="text-rose-500 font-bold">*</span></Label>
         {cities ? (
           <Select value={city || ''} onValueChange={v => onCityChange(v)} disabled={disabled}>
-            <SelectTrigger><SelectValue placeholder="Stadt auswählen" /></SelectTrigger>
+            <SelectTrigger><SelectValue placeholder="Bremen" /></SelectTrigger>
             <SelectContent>
               {cities.map(c => (
                 <SelectItem key={c} value={c}>{c}</SelectItem>

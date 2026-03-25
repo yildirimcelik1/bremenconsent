@@ -36,7 +36,6 @@ export function DateOfBirthSelect({ value, onChange, disabled }: DateOfBirthSele
 
   return (
     <div className="space-y-2">
-      <Label>Geburtsdatum</Label>
       <div className="grid grid-cols-3 gap-2">
         <Select value={year} onValueChange={v => handleChange(v, month, day)} disabled={disabled}>
           <SelectTrigger><SelectValue placeholder="Jahr" /></SelectTrigger>
