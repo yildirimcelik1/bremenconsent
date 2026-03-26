@@ -65,22 +65,30 @@ export default function DesignerDashboard() {
       return;
     }
     setApprovingId(formId);
+
+    // 1. Önce PDF oluştur (DB'ye dokunmuyor artık)
+    let pdfUrl: string | null = null;
+    try {
+      const artistObj = artists.find(a => a.id === artistId);
+      const formWithUpdates = { ...form!, status: 'approved' as const, assigned_artist_id: artistId, price: price || null };
+      pdfUrl = await generateAndUploadPdf(formWithUpdates, artistObj?.name);
+    } catch (pdfErr) {
+      console.error('PDF oluşturma başarısız, onaylama devam ediyor:', pdfErr);
+    }
+
+    // 2. TEK bir UPDATE ile hem onay bilgisini hem pdf_url'yi kaydet → webhook yalnızca 1 kez tetiklenir
     const { error } = await supabase.from('consent_forms').update({
       status: 'approved',
       approved_at: new Date().toISOString(),
       assigned_artist_id: artistId,
       price: price || null,
+      pdf_url: pdfUrl || null,
+      document_generated_at: pdfUrl ? new Date().toISOString() : null,
     }).eq('id', formId);
+
     if (error) {
       toast({ title: 'Genehmigung fehlgeschlagen', description: error.message, variant: 'destructive' });
     } else {
-      // Generate PDF
-      const updatedForm = forms.find(f => f.id === formId);
-      if (updatedForm) {
-        const artistObj = artists.find(a => a.id === artistId);
-        const formWithUpdates = { ...updatedForm, status: 'approved' as const, assigned_artist_id: artistId, price: price || null };
-        await generateAndUploadPdf(formWithUpdates, artistObj?.name);
-      }
       setShowSuccess(true);
       fetchData();
     }

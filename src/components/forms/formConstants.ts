@@ -155,3 +155,18 @@ export function generateYears() {
 export function generateDays() {
   return Array.from({ length: 31 }, (_, i) => i + 1);
 }
+
+export const COUNTRY_CODES = [
+  { code: '+49', label: 'DE (+49)', country: 'Germany' },
+  { code: '+90', label: 'TR (+90)', country: 'Turkey' },
+  { code: '+43', label: 'AT (+43)', country: 'Austria' },
+  { code: '+41', label: 'CH (+41)', country: 'Switzerland' },
+  { code: '+31', label: 'NL (+31)', country: 'Netherlands' },
+  { code: '+32', label: 'BE (+32)', country: 'Belgium' },
+  { code: '+33', label: 'FR (+33)', country: 'France' },
+  { code: '+39', label: 'IT (+39)', country: 'Italy' },
+  { code: '+34', label: 'ES (+34)', country: 'Spain' },
+  { code: '+48', label: 'PL (+48)', country: 'Poland' },
+  { code: '+44', label: 'UK (+44)', country: 'United Kingdom' },
+  { code: '+1', label: 'US (+1)', country: 'USA' },
+];

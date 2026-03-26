@@ -10,7 +10,7 @@ import { DateOfBirthSelect } from './DateOfBirthSelect';
 import { AddressSection } from './AddressSection';
 import { ReferralSourceSection } from './ReferralSourceSection';
 import { ParentConsentSection } from './ParentConsentSection';
-import { TATTOO_PLACEMENTS } from './formConstants';
+import { TATTOO_PLACEMENTS, COUNTRY_CODES } from './formConstants';
 import { Loader2, Save, CheckCircle, ExternalLink, ShieldCheck } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
@@ -101,6 +101,18 @@ export function TattooConsentForm({
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const [phoneCode, setPhoneCode] = useState(() => {
+    if (!initialData?.phone) return '+49';
+    const match = COUNTRY_CODES.find(c => initialData.phone?.startsWith(c.code));
+    return match ? match.code : '+49';
+  });
+
+  const [phoneLocal, setPhoneLocal] = useState(() => {
+    if (!initialData?.phone) return '';
+    const match = COUNTRY_CODES.find(c => initialData.phone?.startsWith(c.code));
+    return match ? initialData.phone.replace(match.code, '').trim() : initialData.phone;
+  });
+
   const update = <K extends keyof TattooFormData>(key: K, val: TattooFormData[K]) => {
     if (isReadOnly) return;
     setForm(prev => ({ ...prev, [key]: val }));
@@ -165,22 +177,51 @@ export function TattooConsentForm({
               {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
             </div>
             <div className="space-y-2">
-              <Label>Telefonnummer <span className="text-muted-foreground text-xs">(optional)</span></Label>
-              <Input
-                value={form.phone || ''}
-                onChange={e => update('phone', e.target.value || null)}
-                disabled={isReadOnly}
-                placeholder="+49 xxx xxxxxxx"
-              />
+              <Label>Telefonnummer <span className="text-rose-500 font-bold">*</span></Label>
+              <div className="flex gap-2">
+                <Select
+                  value={phoneCode}
+                  onValueChange={val => {
+                    setPhoneCode(val);
+                    update('phone', val + (phoneLocal || ''));
+                  }}
+                  disabled={isReadOnly}
+                >
+                  <SelectTrigger className="w-[110px]">
+                    <SelectValue placeholder="Code" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[300px]">
+                    {COUNTRY_CODES.map(c => (
+                      <SelectItem key={c.code} value={c.code}>
+                        {c.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Input
+                  className={`flex-1 ${errors.phone ? 'border-destructive' : ''}`}
+                  value={phoneLocal}
+                  onChange={e => {
+                    const val = e.target.value.replace(/\D/g, ''); // Sadece rakamlar
+                    setPhoneLocal(val);
+                    update('phone', phoneCode + val);
+                    setErrors(prev => ({ ...prev, phone: '' }));
+                  }}
+                  disabled={isReadOnly}
+                  placeholder="176 xxxxxxxx"
+                />
+              </div>
+              {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone}</p>}
             </div>
           </div>
           <AddressSection
             country={form.country}
             city={form.city}
             postalCode={form.postal_code}
-            onCountryChange={v => update('country', v)}
-            onCityChange={v => update('city', v)}
-            onPostalCodeChange={v => update('postal_code', v)}
+            onCountryChange={v => { update('country', v); setErrors(prev => ({ ...prev, country: '' })); }}
+            onCityChange={v => { update('city', v); setErrors(prev => ({ ...prev, city: '' })); }}
+            onPostalCodeChange={v => { update('postal_code', v); setErrors(prev => ({ ...prev, postal_code: '' })); }}
+            errors={errors}
             disabled={isReadOnly}
           />
           <div className="space-y-2">
@@ -211,7 +252,12 @@ export function TattooConsentForm({
                   key={g}
                   type="button"
                   disabled={isReadOnly}
-                  onClick={() => !isReadOnly && update('gender', form.gender === g ? null : g)}
+                  onClick={() => {
+                    if (!isReadOnly) {
+                      update('gender', form.gender === g ? null : g);
+                      setErrors(prev => ({ ...prev, gender: '' }));
+                    }
+                  }}
                   className={`px-5 py-2 rounded-lg text-sm font-medium border transition-all duration-200 ${
                     form.gender === g
                       ? 'border-primary bg-primary text-primary-foreground shadow-sm'
@@ -319,8 +365,8 @@ export function TattooConsentForm({
                 <div className="space-y-8 py-2">
                   <div className="text-center space-y-1 text-sm text-muted-foreground mb-8">
                     <p className="font-bold text-foreground">Cleopatra Ink Tattoo & Piercing</p>
-                    <p>Spuistraat 197 1012 VN</p>
-                    <p>Amsterdam</p>
+                    <p>Knochenhauerstraße 18</p>
+                    <p>28195 Bremen, Germany</p>
                   </div>
 
                   <section className="space-y-4">
@@ -450,7 +496,7 @@ export function TattooConsentForm({
             if (!form.city) newErrors.city = 'Stadt ist erforderlich';
             if (!form.postal_code) newErrors.postal_code = 'Postleitzahl ist erforderlich';
             if (!form.date_of_birth) newErrors.dob = 'Geburtsdatum ist erforderlich';
-            if (!form.phone) newErrors.phone = 'Telefonnummer ist erforderlich';
+            if (!phoneLocal || phoneLocal.trim().length === 0) newErrors.phone = 'Telefonnummer ist erforderlich';
     if (!form.gender) newErrors.gender = 'Geschlecht ist erforderlich';
             if (!form.body_area) newErrors.body_area = 'Tattoo-Platzierung ist erforderlich';
             if (!form.client_signature) newErrors.signature = 'Unterschrift ist erforderlich';

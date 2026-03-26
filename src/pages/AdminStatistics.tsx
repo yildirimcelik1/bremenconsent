@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
-import { format, subMonths, startOfMonth, endOfMonth, isWithinInterval, parseISO, startOfDay } from 'date-fns';
+import { format, subMonths, startOfMonth, endOfMonth, isWithinInterval, parseISO, startOfDay, startOfWeek, addWeeks } from 'date-fns';
 import {
   CalendarIcon, Euro, Scissors, PenTool, Loader2, Download,
   TrendingUp, TrendingDown, Minus, BarChart2, MapPin,
@@ -252,26 +252,35 @@ export default function AdminStatistics() {
     return priced.length > 0 ? getRevenue(priced) / priced.length : 0;
   }, [filteredForms]);
 
-  // ── Monthly data ──
-  const monthlyData = useMemo(() => {
-    const months: Record<string, { month: string; revenue: number; tattoo: number; piercing: number; total: number }> = {};
-    const current = new Date(dateRange.from);
-    while (current <= dateRange.to) {
-      const key = format(current, 'yyyy-MM');
-      months[key] = { month: format(current, 'MMM yy'), revenue: 0, tattoo: 0, piercing: 0, total: 0 };
-      current.setMonth(current.getMonth() + 1);
+  // ── Weekly data ──
+  const weeklyData = useMemo(() => {
+    const weeks: Record<string, { week: string; revenue: number; tattoo: number; piercing: number; total: number }> = {};
+    let current = startOfWeek(dateRange.from, { weekStartsOn: 1 });
+    const end = dateRange.to;
+
+    while (current <= end) {
+      const key = format(current, 'yyyy-ww');
+      weeks[key] = { 
+        week: `KW ${format(current, 'ww')}`, 
+        revenue: 0, tattoo: 0, piercing: 0, total: 0 
+      };
+      current = addWeeks(current, 1);
     }
+
     filteredForms.forEach(f => {
-      const key = f.created_at ? format(parseISO(f.created_at), 'yyyy-MM') : null;
-      if (key && months[key]) {
-        const price = parseFloat(f.price || '0');
-        if (!isNaN(price)) months[key].revenue += price;
-        if (f.consent_type === 'tattoo') months[key].tattoo++;
-        else months[key].piercing++;
-        months[key].total++;
+      const d = f.created_at ? parseISO(f.created_at) : null;
+      if (d) {
+        const key = format(startOfWeek(d, { weekStartsOn: 1 }), 'yyyy-ww');
+        if (weeks[key]) {
+          const price = parseFloat(f.price || '0');
+          if (!isNaN(price)) weeks[key].revenue += price;
+          if (f.consent_type === 'tattoo') weeks[key].tattoo++;
+          else weeks[key].piercing++;
+          weeks[key].total++;
+        }
       }
     });
-    return Object.values(months);
+    return Object.values(weeks);
   }, [filteredForms, dateRange]);
 
   // ── Referral ──
@@ -314,7 +323,8 @@ export default function AdminStatistics() {
     REFERRAL_OPTIONS.forEach(opt => { revenueMap[opt] = 0; countMap[opt] = 0; });
     tattooForms.forEach(f => {
       const source = f.reference_notes || 'Not specified';
-      const key = (REFERRAL_OPTIONS as readonly string[]).includes(source) ? source : 'Other';
+      // Map to 'Sonstiges' if not in standard list
+      const key = (REFERRAL_OPTIONS as readonly string[]).includes(source) ? source : 'Sonstiges';
       const price = parseFloat(f.price || '0');
       if (!isNaN(price)) revenueMap[key] = (revenueMap[key] || 0) + price;
       countMap[key] = (countMap[key] || 0) + 1;
@@ -345,7 +355,8 @@ export default function AdminStatistics() {
     REFERRAL_OPTIONS.forEach(opt => { revenueMap[opt] = 0; countMap[opt] = 0; });
     piercingForms.forEach(f => {
       const source = f.reference_notes || 'Not specified';
-      const key = (REFERRAL_OPTIONS as readonly string[]).includes(source) ? source : 'Other';
+      // Map to 'Sonstiges' if not in standard list
+      const key = (REFERRAL_OPTIONS as readonly string[]).includes(source) ? source : 'Sonstiges';
       const price = parseFloat(f.price || '0');
       if (!isNaN(price)) revenueMap[key] = (revenueMap[key] || 0) + price;
       countMap[key] = (countMap[key] || 0) + 1;
@@ -373,7 +384,8 @@ export default function AdminStatistics() {
     REFERRAL_OPTIONS.forEach(opt => { revenueMap[opt] = 0; });
     filteredForms.forEach(f => {
       const source = f.reference_notes || 'Not specified';
-      const key = (REFERRAL_OPTIONS as readonly string[]).includes(source) ? source : 'Other';
+      // Map to 'Sonstiges' if not in standard list
+      const key = (REFERRAL_OPTIONS as readonly string[]).includes(source) ? source : 'Sonstiges';
       const price = parseFloat(f.price || '0');
       if (!isNaN(price)) revenueMap[key] = (revenueMap[key] || 0) + price;
     });
@@ -389,17 +401,17 @@ export default function AdminStatistics() {
 
   // ── Gender Distribution ──
   const genderDistribution = useMemo(() => {
-    const counts: Record<string, number> = { Male: 0, Female: 0, Other: 0, 'Not Specified': 0 };
+    const counts: Record<string, number> = { Männlich: 0, Weiblich: 0, Sonstiges: 0, 'Nicht angegeben': 0 };
     filteredForms.forEach(f => {
-      const g = f.gender || 'Not Specified';
+      const g = f.gender || 'Nicht angegeben';
       counts[g] = (counts[g] || 0) + 1;
     });
     const total = filteredForms.length || 1;
     const colors = {
-      Male: '#3b82f6',
-      Female: '#ec4899',
-      Other: '#8b5cf6',
-      'Not Specified': '#94a3b8'
+      Männlich: '#3b82f6', // Blue
+      Weiblich: '#ec4899', // Pink
+      Sonstiges: '#8b5cf6', // Purple
+      'Nicht angegeben': '#94a3b8'
     };
     return Object.entries(counts)
       .filter(([_, count]) => count > 0)
@@ -414,17 +426,17 @@ export default function AdminStatistics() {
 
   // ── Piercing Gender Distribution ──
   const piercingGenderDistribution = useMemo(() => {
-    const counts: Record<string, number> = { Male: 0, Female: 0, Other: 0, 'Not Specified': 0 };
+    const counts: Record<string, number> = { Männlich: 0, Weiblich: 0, Sonstiges: 0, 'Nicht angegeben': 0 };
     piercingForms.forEach(f => {
-      const g = f.gender || 'Not Specified';
+      const g = f.gender || 'Nicht angegeben';
       counts[g] = (counts[g] || 0) + 1;
     });
     const total = piercingForms.length || 1;
     const colors = {
-      Male: '#3b82f6',
-      Female: '#ec4899',
-      Other: '#8b5cf6',
-      'Not Specified': '#94a3b8'
+      Männlich: '#3b82f6',
+      Weiblich: '#ec4899',
+      Sonstiges: '#8b5cf6',
+      'Nicht angegeben': '#94a3b8'
     };
     return Object.entries(counts)
       .filter(([_, count]) => count > 0)
@@ -439,17 +451,17 @@ export default function AdminStatistics() {
 
   // ── Tattoo Gender Distribution ──
   const tattooGenderDistribution = useMemo(() => {
-    const counts: Record<string, number> = { Male: 0, Female: 0, Other: 0, 'Not Specified': 0 };
+    const counts: Record<string, number> = { Männlich: 0, Weiblich: 0, Sonstiges: 0, 'Nicht angegeben': 0 };
     tattooForms.forEach(f => {
-      const g = f.gender || 'Not Specified';
+      const g = f.gender || 'Nicht angegeben';
       counts[g] = (counts[g] || 0) + 1;
     });
     const total = tattooForms.length || 1;
     const colors = {
-      Male: '#3b82f6',
-      Female: '#ec4899',
-      Other: '#8b5cf6',
-      'Not Specified': '#94a3b8'
+      Männlich: '#3b82f6',
+      Weiblich: '#ec4899',
+      Sonstiges: '#8b5cf6',
+      'Nicht angegeben': '#94a3b8'
     };
     return Object.entries(counts)
       .filter(([_, count]) => count > 0)
@@ -460,7 +472,7 @@ export default function AdminStatistics() {
         color: colors[name as keyof typeof colors] || '#94a3b8'
       }))
       .sort((a, b) => parseInt(b.pct) - parseInt(a.pct));
-  }, [piercingForms]);
+  }, [tattooForms]);
 
   // ── Tattoo Age Distribution ──
   const tattooAgeDistribution = useMemo(() => {
@@ -677,18 +689,18 @@ export default function AdminStatistics() {
         <Card className="glass">
           <CardHeader className="flex flex-row items-end justify-between">
             <div>
-              <CardTitle className="text-lg text-foreground">Monthly Revenue &amp; Volume</CardTitle>
+              <CardTitle className="text-lg text-foreground">Weekly Revenue &amp; Volume</CardTitle>
               <p className="text-xs text-muted-foreground mt-1">
                 Total: {filteredForms.length} forms &nbsp;·&nbsp; {tattooForms.length} tattoo &nbsp;·&nbsp; {piercingForms.length} piercing
               </p>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {monthlyData.some(m => m.revenue > 0 || m.total > 0) ? (
+            {weeklyData.some(m => m.revenue > 0 || m.total > 0) ? (
               <div className="h-64">
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1 ml-1">Revenue</p>
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={monthlyData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+                  <AreaChart data={weeklyData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                     <defs>
                       <linearGradient id="elegantRev" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stopColor="hsl(40, 78%, 48%)" stopOpacity={0.35} />
@@ -696,7 +708,7 @@ export default function AdminStatistics() {
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="2 4" stroke="rgba(0,0,0,0.06)" vertical={false} />
-                    <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'currentColor' }} />
+                    <XAxis dataKey="week" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'currentColor' }} />
                     <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'currentColor' }} width={48} tickFormatter={(v) => `€${v}`} />
                     <Tooltip
                       cursor={{ stroke: 'hsl(40,78%,48%)', strokeWidth: 1, strokeDasharray: '4 2' }}

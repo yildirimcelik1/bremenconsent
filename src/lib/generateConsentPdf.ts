@@ -134,11 +134,6 @@ export async function generateAndUploadPdf(form: ConsentForm, artistName?: strin
     .from('consent-pdfs')
     .getPublicUrl(fileName);
 
-  // Update form with pdf_url
-  await supabase.from('consent_forms').update({
-    pdf_url: urlData.publicUrl,
-    document_generated_at: new Date().toISOString(),
-  }).eq('id', form.id);
-
+  // URL'yi döndür — DB güncellemesi DesignerDashboard'da tek UPDATE içinde yapılır
   return urlData.publicUrl;
 }
